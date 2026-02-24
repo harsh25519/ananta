@@ -1,0 +1,96 @@
+package dev.hkb.ananta.entity;
+
+import jakarta.persistence.*;
+
+import java.math.BigDecimal;
+import java.time.OffsetDateTime;
+
+@Entity
+@Table(name = "orders")
+public class Orders {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
+    private Long id;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "customer_id", nullable = false)
+    private Users user;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "billing_address_id", nullable = false)
+    private Address billingAddress;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "shipping_address_id", nullable = false)
+    private Address shippingAddress;
+
+    @Column(name = "total_price", nullable = false, precision = 12, scale =2)
+    private BigDecimal totalPrice;
+
+    @Column(name = "created_at", updatable = false, insertable = false)
+    private OffsetDateTime createdAt;
+
+    //Constructors
+    public Orders() {
+    }
+
+    public Orders(Users user, Address billingAddress, Address shippingAddress,
+                  BigDecimal totalPrice, OffsetDateTime createdAt) {
+        this.user = user;
+        this.billingAddress = billingAddress;
+        this.shippingAddress = shippingAddress;
+        this.totalPrice = totalPrice;
+        this.createdAt = createdAt;
+    }
+
+    //Getters and Setters
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public Users getUser() {
+        return user;
+    }
+
+    public void setUser(Users user) {
+        this.user = user;
+    }
+
+    public Address getBillingAddress() {
+        return billingAddress;
+    }
+
+    public void setBillingAddress(Address billingAddress) {
+        this.billingAddress = billingAddress;
+    }
+
+    public Address getShippingAddress() {
+        return shippingAddress;
+    }
+
+    public void setShippingAddress(Address shippingAddress) {
+        this.shippingAddress = shippingAddress;
+    }
+
+    public BigDecimal getTotalPrice() {
+        return totalPrice;
+    }
+
+    public void setTotalPrice(BigDecimal totalPrice) {
+        this.totalPrice = totalPrice;
+    }
+
+    public OffsetDateTime getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(OffsetDateTime createdAt) {
+        this.createdAt = createdAt;
+    }
+}
