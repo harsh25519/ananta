@@ -8,7 +8,7 @@ import jakarta.validation.constraints.Min;
 @Table(name = "reviews",
         uniqueConstraints = @UniqueConstraint(columnNames = {"product_id", "customer_id"})
 )
-public class Reviews {
+public class Review {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -32,10 +32,10 @@ public class Reviews {
     private int rating;
 
     //Constructors
-    public Reviews() {
+    public Review() {
     }
 
-    public Reviews(Product product, Users user, String comments, int rating) {
+    public Review(Product product, Users user, String comments, int rating) {
         this.product = product;
         this.user = user;
         this.comments = comments;

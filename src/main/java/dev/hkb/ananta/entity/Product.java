@@ -41,7 +41,7 @@ public class Product {
             joinColumns = @JoinColumn(name ="product_id"),
             inverseJoinColumns = @JoinColumn(name = "tag_id")
     )
-    private Set<Tags> tagSet = new HashSet<>();
+    private Set<Tag> tagSet = new HashSet<>();
 
     //Constructors
     public Product() {
@@ -112,11 +112,11 @@ public class Product {
         this.createdAt = createdAt;
     }
 
-    public Set<Tags> getTagSet() {
+    public Set<Tag> getTagSet() {
         return tagSet;
     }
 
-    public void setTagSet(Set<Tags> tagSet) {
+    public void setTagSet(Set<Tag> tagSet) {
         this.tagSet = tagSet;
     }
 }

@@ -7,7 +7,7 @@ import java.util.Set;
 
 @Entity
 @Table(name = "tags")
-public class Tags {
+public class Tag {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -21,10 +21,10 @@ public class Tags {
     private Set<Product> productSet = new HashSet<>();
 
     //Constructors
-    public Tags() {
+    public Tag() {
     }
 
-    public Tags(String tag) {
+    public Tag(String tag) {
         this.tag = tag;
     }
 
