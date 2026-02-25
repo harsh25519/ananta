@@ -4,6 +4,8 @@ import dev.hkb.ananta.constants.ProductStatus;
 import jakarta.persistence.*;
 
 import java.time.OffsetDateTime;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Table(name = "product")
@@ -33,6 +35,13 @@ public class Product {
 
     @Column(name = "created_at")
     private OffsetDateTime createdAt;
+
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(name = "product_tag",
+            joinColumns = @JoinColumn(name ="product_id"),
+            inverseJoinColumns = @JoinColumn(name = "tag_id")
+    )
+    private Set<Tags> tagSet = new HashSet<>();
 
     //Constructors
     public Product() {
@@ -101,5 +110,13 @@ public class Product {
 
     public void setCreatedAt(OffsetDateTime createdAt) {
         this.createdAt = createdAt;
+    }
+
+    public Set<Tags> getTagSet() {
+        return tagSet;
+    }
+
+    public void setTagSet(Set<Tags> tagSet) {
+        this.tagSet = tagSet;
     }
 }

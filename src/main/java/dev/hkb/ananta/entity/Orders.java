@@ -1,5 +1,6 @@
 package dev.hkb.ananta.entity;
 
+import dev.hkb.ananta.constants.OrderStatus;
 import jakarta.persistence.*;
 
 import java.math.BigDecimal;
@@ -31,6 +32,12 @@ public class Orders {
 
     @Column(name = "created_at", updatable = false, insertable = false)
     private OffsetDateTime createdAt;
+
+//    status (CREATED, PAYMENT_PENDING, PAID, CANCELLED)
+    //Create a field status to check the status of payments and make order and payment ( 1 - n)
+    @Enumerated(EnumType.STRING)
+    @Column(name = "order_status")
+    private OrderStatus orderStatus;
 
     //Constructors
     public Orders() {
