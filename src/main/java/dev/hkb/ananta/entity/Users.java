@@ -2,9 +2,7 @@ package dev.hkb.ananta.entity;
 
 import dev.hkb.ananta.constants.UserRoles;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Pattern;
+import org.hibernate.annotations.CreationTimestamp;
 
 import java.time.OffsetDateTime;
 
@@ -23,22 +21,20 @@ public class Users {
     @Column(name = "last_name", nullable = false, length = 50)
     private String lastName;
 
-    @Email
-    @NotBlank
-    @Column(name = "email", nullable = false)
+    @Column(name = "email", nullable = false, unique = true)
     private String email;
 
     @Column(name = "password", nullable = false)
     private String password;
 
-    @Pattern(regexp = "^[6-9]//d{9}", message = "Enter a valid phone number")
     @Column(name = "phone_num", nullable = false, length = 20)
     private String phoneNumber;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "users_role", nullable = false)
-    private UserRoles role = UserRoles.CUSTOMER;
+    private UserRoles role;
 
+    @CreationTimestamp
     @Column(name = "created_at", updatable = false, insertable = false)
     private OffsetDateTime createdAt;
 
@@ -46,7 +42,7 @@ public class Users {
     public Users() {
     }
 
-    public Users(String firstName, String lastName, String email, String password, String phoneNumber, UserRoles role) {
+    public Users(String firstName, String lastName, String email, String password, String phoneNumber, UserRoles role ) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;

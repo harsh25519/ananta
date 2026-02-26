@@ -25,7 +25,7 @@ public class Seller {
     @Column(name = "license", nullable = false)
     private String license;
 
-    @Column(name = "addrerss_line", nullable = false)
+    @Column(name = "address_line", nullable = false)
     private String addressLine;
 
     @Column(name = "city", nullable = false)

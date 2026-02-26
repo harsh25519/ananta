@@ -2,7 +2,9 @@ package dev.hkb.ananta.entity;
 
 import dev.hkb.ananta.constants.ProductStatus;
 import jakarta.persistence.*;
+import org.hibernate.annotations.CreationTimestamp;
 
+import java.math.BigDecimal;
 import java.time.OffsetDateTime;
 import java.util.HashSet;
 import java.util.Set;
@@ -22,6 +24,9 @@ public class Product {
     @Column(name = "description", columnDefinition = "TEXT")
     private String description;
 
+    @Column(name = "price", precision = 10, scale = 2, nullable = false)
+    private BigDecimal price;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "category_id", nullable = false)
     private Category category;
@@ -33,6 +38,7 @@ public class Product {
     @Column(name = "status")
     private ProductStatus status;
 
+    @CreationTimestamp
     @Column(name = "created_at")
     private OffsetDateTime createdAt;
 
@@ -47,8 +53,9 @@ public class Product {
     public Product() {
     }
 
-    public Product(String name, String description, Category category, Manufacturer manufacturer, ProductStatus status) {
+    public Product(String name, BigDecimal price, String description, Category category, Manufacturer manufacturer, ProductStatus status) {
         this.name = name;
+        this.price = price;
         this.description = description;
         this.category = category;
         this.manufacturer = manufacturer;
@@ -78,6 +85,14 @@ public class Product {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public BigDecimal getPrice() {
+        return price;
+    }
+
+    public void setPrice(BigDecimal price) {
+        this.price = price;
     }
 
     public Category getCategory() {

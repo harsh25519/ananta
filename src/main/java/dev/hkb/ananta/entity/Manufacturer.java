@@ -3,6 +3,8 @@ package dev.hkb.ananta.entity;
 import dev.hkb.ananta.constants.StatusEnum;
 import jakarta.persistence.*;
 
+import java.util.List;
+
 @Entity
 @Table(name = "manufacturer")
 public class Manufacturer {
@@ -21,6 +23,9 @@ public class Manufacturer {
     @Column(name = "status", nullable = false)
     @Enumerated(EnumType.STRING)
     private StatusEnum status;
+
+    @OneToMany(mappedBy = "manufacturer")
+    private List<Product> products;
 
     // Constructors
     public Manufacturer() {
@@ -63,5 +68,13 @@ public class Manufacturer {
 
     public void setStatus(StatusEnum status) {
         this.status = status;
+    }
+
+    public List<Product> getProducts() {
+        return products;
+    }
+
+    public void setProducts(List<Product> products) {
+        this.products = products;
     }
 }
