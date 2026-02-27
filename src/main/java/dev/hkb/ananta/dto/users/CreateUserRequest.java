@@ -1,4 +1,4 @@
-package dev.hkb.ananta.requestDTO;
+package dev.hkb.ananta.dto.users;
 
 import dev.hkb.ananta.constants.UserRoles;
 import jakarta.validation.constraints.Email;

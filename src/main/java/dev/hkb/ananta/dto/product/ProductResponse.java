@@ -1,4 +1,4 @@
-package dev.hkb.ananta.responseDTO;
+package dev.hkb.ananta.dto.product;
 
 import dev.hkb.ananta.constants.ProductStatus;
 

@@ -1,7 +1,7 @@
 package dev.hkb.ananta.controller;
 
-import dev.hkb.ananta.requestDTO.CreateUserRequest;
-import dev.hkb.ananta.responseDTO.UserResponse;
+import dev.hkb.ananta.dto.users.CreateUserRequest;
+import dev.hkb.ananta.dto.users.UserResponse;
 import dev.hkb.ananta.service.UserService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;

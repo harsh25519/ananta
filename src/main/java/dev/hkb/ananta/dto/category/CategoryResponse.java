@@ -1,4 +1,4 @@
-package dev.hkb.ananta.responseDTO;
+package dev.hkb.ananta.dto.category;
 
 public record CategoryResponse(
         Long id,

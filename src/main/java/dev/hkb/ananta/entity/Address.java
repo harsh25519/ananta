@@ -3,7 +3,6 @@ package dev.hkb.ananta.entity;
 import dev.hkb.ananta.constants.CountryEnum;
 import dev.hkb.ananta.constants.StateEnum;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.Pattern;
 
 @Entity
 @Table(name = "address")
@@ -18,7 +17,6 @@ public class Address {
     @JoinColumn(name = "users_id", nullable = false)
     private Users user;
 
-    @Pattern(regexp = "^[6-9]//d{9}", message = "Enter a valid phone number")
     @Column(name = "phone_num")
     private String phoneNumber;
 

@@ -1,4 +1,4 @@
-package dev.hkb.ananta.requestDTO;
+package dev.hkb.ananta.dto.review;
 
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;

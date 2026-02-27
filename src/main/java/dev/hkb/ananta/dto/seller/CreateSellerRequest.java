@@ -1,4 +1,4 @@
-package dev.hkb.ananta.requestDTO;
+package dev.hkb.ananta.dto.seller;
 
 import dev.hkb.ananta.constants.CountryEnum;
 import dev.hkb.ananta.constants.StateEnum;

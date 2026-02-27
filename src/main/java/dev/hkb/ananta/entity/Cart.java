@@ -2,6 +2,8 @@ package dev.hkb.ananta.entity;
 
 import jakarta.persistence.*;
 
+import java.util.List;
+
 @Entity
 @Table(name = "cart")
 public class Cart {
@@ -14,6 +16,9 @@ public class Cart {
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "customer_id", unique = true)
     private Users user;
+
+    @OneToMany(mappedBy = "cart")
+    private List<CartItem> CartItem;
 
     // Constructors
     public Cart() {

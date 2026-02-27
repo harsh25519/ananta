@@ -1,4 +1,4 @@
-package dev.hkb.ananta.requestDTO;
+package dev.hkb.ananta.dto.manufacturer;
 
 import dev.hkb.ananta.constants.StatusEnum;
 import jakarta.validation.constraints.NotBlank;

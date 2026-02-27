@@ -1,4 +1,4 @@
-package dev.hkb.ananta.responseDTO;
+package dev.hkb.ananta.dto.review;
 
 public record ReviewResponse(Long id,
                              Long productId,

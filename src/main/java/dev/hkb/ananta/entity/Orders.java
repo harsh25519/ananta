@@ -2,9 +2,11 @@ package dev.hkb.ananta.entity;
 
 import dev.hkb.ananta.constants.OrderStatus;
 import jakarta.persistence.*;
+import org.hibernate.annotations.CreationTimestamp;
 
 import java.math.BigDecimal;
 import java.time.OffsetDateTime;
+import java.util.List;
 
 @Entity
 @Table(name = "orders")
@@ -30,6 +32,7 @@ public class Orders {
     @Column(name = "total_price", nullable = false, precision = 12, scale =2)
     private BigDecimal totalPrice;
 
+    @CreationTimestamp
     @Column(name = "created_at", updatable = false, insertable = false)
     private OffsetDateTime createdAt;
 
@@ -38,6 +41,9 @@ public class Orders {
     @Enumerated(EnumType.STRING)
     @Column(name = "order_status")
     private OrderStatus orderStatus;
+
+    @OneToMany(mappedBy = "order")
+    private List<OrderItem> orderItemList;
 
     //Constructors
     public Orders() {
@@ -99,5 +105,21 @@ public class Orders {
 
     public void setCreatedAt(OffsetDateTime createdAt) {
         this.createdAt = createdAt;
+    }
+
+    public OrderStatus getOrderStatus() {
+        return orderStatus;
+    }
+
+    public void setOrderStatus(OrderStatus orderStatus) {
+        this.orderStatus = orderStatus;
+    }
+
+    public List<OrderItem> getOrderItemList() {
+        return orderItemList;
+    }
+
+    public void setOrderItemList(List<OrderItem> orderItemList) {
+        this.orderItemList = orderItemList;
     }
 }

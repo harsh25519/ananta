@@ -1,4 +1,4 @@
-package dev.hkb.ananta.requestDTO;
+package dev.hkb.ananta.dto.product;
 
 import dev.hkb.ananta.constants.ProductStatus;
 import jakarta.validation.constraints.*;
