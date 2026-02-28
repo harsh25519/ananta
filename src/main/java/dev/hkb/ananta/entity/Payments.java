@@ -1,9 +1,12 @@
 package dev.hkb.ananta.entity;
 
+import dev.hkb.ananta.constants.CurrencyEnum;
 import dev.hkb.ananta.constants.PaymentMethod;
 import dev.hkb.ananta.constants.PaymentStatus;
 import jakarta.persistence.*;
+import org.hibernate.annotations.CreationTimestamp;
 
+import java.math.BigDecimal;
 import java.time.OffsetDateTime;
 
 @Entity
@@ -17,20 +20,28 @@ public class Payments {
 
     //Create it many to one and unique false as payment can fail multiple times
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "order_id")
-    private Orders orders;
+    @JoinColumn(name = "order_id", nullable = false)
+    private Orders order;
+
+    @Column(name = "amount",precision = 12, scale = 2, nullable = false)
+    private BigDecimal amount;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "currency", nullable = false)
+    private CurrencyEnum currency = CurrencyEnum.INR;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "payment_method", nullable = false)
-    private PaymentMethod paymentMethods;
+    private PaymentMethod paymentMethod;
 
-    @Column(name = "transaction_id", unique = true, nullable = false)
-    private String transactionId;
+    @Column(name = "transaction_id", unique = true)
+    private String gatewayTransactionId;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "payment_status")
+    @Column(name = "payment_status", nullable = false)
     private PaymentStatus paymentStatus;
 
+    @CreationTimestamp
     @Column(name = "created_at", updatable = false, insertable = false)
     private OffsetDateTime createdAt;
 
@@ -38,10 +49,11 @@ public class Payments {
     public Payments() {
     }
 
-    public Payments(Orders orders, PaymentMethod paymentMethods, String transactionId, PaymentStatus paymentStatus, OffsetDateTime createdAt) {
-        this.orders = orders;
-        this.paymentMethods = paymentMethods;
-        this.transactionId = transactionId;
+    public Payments(Orders order, BigDecimal amount, PaymentMethod paymentMethod, String gatewayTransactionId, PaymentStatus paymentStatus, OffsetDateTime createdAt) {
+        this.order = order;
+        this.amount = amount;
+        this.paymentMethod = paymentMethod;
+        this.gatewayTransactionId = gatewayTransactionId;
         this.paymentStatus = paymentStatus;
         this.createdAt = createdAt;
     }
@@ -56,28 +68,36 @@ public class Payments {
         this.id = id;
     }
 
-    public Orders getOrders() {
-        return orders;
+    public Orders getOrder() {
+        return order;
     }
 
-    public void setOrders(Orders orders) {
-        this.orders = orders;
+    public void setOrder(Orders orders) {
+        this.order = orders;
     }
 
-    public PaymentMethod getPaymentMethods() {
-        return paymentMethods;
+    public BigDecimal getAmount() {
+        return amount;
     }
 
-    public void setPaymentMethods(PaymentMethod paymentMethods) {
-        this.paymentMethods = paymentMethods;
+    public void setAmount(BigDecimal amount) {
+        this.amount = amount;
     }
 
-    public String getTransactionId() {
-        return transactionId;
+    public PaymentMethod getPaymentMethod() {
+        return paymentMethod;
     }
 
-    public void setTransactionId(String transactionId) {
-        this.transactionId = transactionId;
+    public void setPaymentMethod(PaymentMethod paymentMethods) {
+        this.paymentMethod = paymentMethods;
+    }
+
+    public String getGatewayTransactionId() {
+        return gatewayTransactionId;
+    }
+
+    public void setGatewayTransactionId(String transactionId) {
+        this.gatewayTransactionId = transactionId;
     }
 
     public PaymentStatus getPaymentStatus() {

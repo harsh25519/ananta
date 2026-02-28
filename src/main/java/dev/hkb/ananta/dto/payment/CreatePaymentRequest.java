@@ -1,4 +1,10 @@
 package dev.hkb.ananta.dto.payment;
 
-public record CreatePaymentRequest() {
+import dev.hkb.ananta.constants.PaymentMethod;
+import jakarta.validation.constraints.NotNull;
+
+public record CreatePaymentRequest(
+        @NotNull Long orderId,
+        @NotNull PaymentMethod paymentMethod
+) {
 }

@@ -1,5 +1,6 @@
 package dev.hkb.ananta.entity;
 
+import dev.hkb.ananta.constants.CurrencyEnum;
 import dev.hkb.ananta.constants.OrderStatus;
 import jakarta.persistence.*;
 import org.hibernate.annotations.CreationTimestamp;
@@ -31,6 +32,10 @@ public class Orders {
 
     @Column(name = "total_price", nullable = false, precision = 12, scale =2)
     private BigDecimal totalPrice;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "currency", precision = 12, scale = 2, nullable = false)
+    private CurrencyEnum currency = CurrencyEnum.INR;
 
     @CreationTimestamp
     @Column(name = "created_at", updatable = false, insertable = false)
@@ -97,6 +102,14 @@ public class Orders {
 
     public void setTotalPrice(BigDecimal totalPrice) {
         this.totalPrice = totalPrice;
+    }
+
+    public CurrencyEnum getCurrency() {
+        return currency;
+    }
+
+    public void setCurrency(CurrencyEnum currency) {
+        this.currency = currency;
     }
 
     public OffsetDateTime getCreatedAt() {
