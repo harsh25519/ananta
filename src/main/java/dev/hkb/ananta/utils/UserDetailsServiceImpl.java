@@ -1,4 +1,4 @@
-package dev.hkb.ananta.service;
+package dev.hkb.ananta.utils;
 
 import dev.hkb.ananta.dao.UserRepository;
 import dev.hkb.ananta.entity.UserPrincipal;
