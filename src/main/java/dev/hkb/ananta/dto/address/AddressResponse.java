@@ -6,6 +6,7 @@ import dev.hkb.ananta.constants.StateEnum;
 // keeping it simple will update it later
 public record AddressResponse(
         Long addressId,
+        String username,
         String phoneNumber,
         String addressLine,
         String city,

@@ -2,7 +2,6 @@ package dev.hkb.ananta.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
@@ -24,8 +23,7 @@ public class SecurityConfig{
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http, JwtFilter jwtFilter) throws Exception{
         http.authorizeHttpRequests(configurer ->
-                        configurer.requestMatchers(HttpMethod.GET, "/user/getList").hasRole("CUSTOMER")
-                        .requestMatchers("/user/**").permitAll()
+                        configurer.anyRequest().permitAll()
         )
                 .httpBasic(Customizer.withDefaults())
                 .sessionManagement(session ->

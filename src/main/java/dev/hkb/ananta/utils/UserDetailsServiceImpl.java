@@ -1,7 +1,6 @@
 package dev.hkb.ananta.utils;
 
 import dev.hkb.ananta.dao.UserRepository;
-import dev.hkb.ananta.entity.UserPrincipal;
 import dev.hkb.ananta.entity.Users;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;

@@ -1,5 +1,6 @@
-package dev.hkb.ananta.entity;
+package dev.hkb.ananta.utils;
 
+import dev.hkb.ananta.entity.Users;
 import org.jspecify.annotations.Nullable;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;

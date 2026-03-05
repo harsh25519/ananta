@@ -3,7 +3,6 @@ package dev.hkb.ananta.entity;
 import dev.hkb.ananta.constants.CountryEnum;
 import dev.hkb.ananta.constants.StateEnum;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotBlank;
 
 @Entity
 @Table(name = "seller_profile")
@@ -11,14 +10,13 @@ public class Seller {
 
     @Id
     @Column(name = "users_id")
-    private Long userId;
+    private Long id;
 
     @MapsId
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "users_id")
     private Users user;
 
-    @NotBlank
     @Column(name = "shop_name", nullable = false)
     private String shopName;
 
@@ -60,12 +58,12 @@ public class Seller {
 
     // Getters and Setters
 
-    public Long getUserId() {
-        return userId;
+    public Long getId() {
+        return id;
     }
 
-    public void setUserId(Long userId) {
-        this.userId = userId;
+    public void setId(Long userId) {
+        this.id = userId;
     }
 
     public Users getUser() {
