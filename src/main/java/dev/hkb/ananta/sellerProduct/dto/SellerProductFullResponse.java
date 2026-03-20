@@ -1,4 +1,4 @@
-package dev.hkb.ananta.dto.sellerProduct;
+package dev.hkb.ananta.sellerProduct.dto;
 
 import dev.hkb.ananta.constants.ProductStatus;
 

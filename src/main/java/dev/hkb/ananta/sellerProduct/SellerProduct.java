@@ -1,7 +1,8 @@
-package dev.hkb.ananta.entity;
+package dev.hkb.ananta.sellerProduct;
 
 import dev.hkb.ananta.constants.ProductStatus;
 import dev.hkb.ananta.product.Product;
+import dev.hkb.ananta.seller.Seller;
 import jakarta.persistence.*;
 
 import java.math.BigDecimal;

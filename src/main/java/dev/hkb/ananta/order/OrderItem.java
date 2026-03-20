@@ -1,5 +1,6 @@
-package dev.hkb.ananta.entity;
+package dev.hkb.ananta.order;
 
+import dev.hkb.ananta.sellerProduct.SellerProduct;
 import jakarta.persistence.*;
 
 import java.math.BigDecimal;

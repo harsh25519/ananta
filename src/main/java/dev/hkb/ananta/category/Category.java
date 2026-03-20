@@ -1,4 +1,4 @@
-package dev.hkb.ananta.entity;
+package dev.hkb.ananta.category;
 
 import dev.hkb.ananta.product.Product;
 import jakarta.persistence.*;

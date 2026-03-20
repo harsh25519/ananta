@@ -1,4 +1,4 @@
-package dev.hkb.ananta.dto.order;
+package dev.hkb.ananta.order.dto;
 
 import java.math.BigDecimal;
 

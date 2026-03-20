@@ -1,6 +1,5 @@
-package dev.hkb.ananta.dao;
+package dev.hkb.ananta.order;
 
-import dev.hkb.ananta.entity.OrderItem;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface OrderItemRepository extends JpaRepository<OrderItem, Long> {

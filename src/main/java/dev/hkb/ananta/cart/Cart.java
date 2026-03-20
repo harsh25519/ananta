@@ -1,4 +1,4 @@
-package dev.hkb.ananta.entity;
+package dev.hkb.ananta.cart;
 
 import dev.hkb.ananta.user.Users;
 import jakarta.persistence.*;

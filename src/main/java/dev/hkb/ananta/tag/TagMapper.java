@@ -1,8 +1,7 @@
-package dev.hkb.ananta.mapper;
+package dev.hkb.ananta.tag;
 
-import dev.hkb.ananta.dto.tag.CreateTagRequest;
-import dev.hkb.ananta.dto.tag.TagResponse;
-import dev.hkb.ananta.entity.Tag;
+import dev.hkb.ananta.tag.dto.CreateTagRequest;
+import dev.hkb.ananta.tag.dto.TagResponse;
 import org.mapstruct.Mapper;
 
 @Mapper(componentModel = "spring")

@@ -1,4 +1,4 @@
-package dev.hkb.ananta.dto.manufacturer;
+package dev.hkb.ananta.manufacturer.dto;
 
 import dev.hkb.ananta.constants.StatusEnum;
 

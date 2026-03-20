@@ -1,4 +1,4 @@
-package dev.hkb.ananta.dto.category;
+package dev.hkb.ananta.category.dto;
 
 import jakarta.validation.constraints.NotBlank;
 

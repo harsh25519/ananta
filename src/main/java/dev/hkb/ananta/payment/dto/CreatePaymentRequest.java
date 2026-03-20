@@ -1,4 +1,4 @@
-package dev.hkb.ananta.dto.payment;
+package dev.hkb.ananta.payment.dto;
 
 import dev.hkb.ananta.constants.PaymentMethod;
 import jakarta.validation.constraints.NotNull;

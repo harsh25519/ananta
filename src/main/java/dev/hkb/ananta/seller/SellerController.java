@@ -1,9 +1,8 @@
-package dev.hkb.ananta.controller;
+package dev.hkb.ananta.seller;
 
-import dev.hkb.ananta.dto.seller.CreateSellerRequest;
-import dev.hkb.ananta.dto.seller.SellerResponse;
-import dev.hkb.ananta.service.SellerService;
 import dev.hkb.ananta.security.utils.UserPrincipal;
+import dev.hkb.ananta.seller.dto.CreateSellerRequest;
+import dev.hkb.ananta.seller.dto.SellerResponse;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;

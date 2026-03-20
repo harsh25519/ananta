@@ -1,4 +1,4 @@
-package dev.hkb.ananta.entity;
+package dev.hkb.ananta.manufacturer;
 
 import dev.hkb.ananta.constants.StatusEnum;
 import dev.hkb.ananta.product.Product;

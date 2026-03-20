@@ -1,14 +1,11 @@
-package dev.hkb.ananta.service;
+package dev.hkb.ananta.seller;
 
 import dev.hkb.ananta.constants.UserRoles;
-import dev.hkb.ananta.dao.SellerRepository;
-import dev.hkb.ananta.user.UserRepository;
-import dev.hkb.ananta.dto.seller.CreateSellerRequest;
-import dev.hkb.ananta.dto.seller.SellerResponse;
-import dev.hkb.ananta.entity.Seller;
-import dev.hkb.ananta.user.Users;
-import dev.hkb.ananta.mapper.SellerMapper;
+import dev.hkb.ananta.seller.dto.CreateSellerRequest;
+import dev.hkb.ananta.seller.dto.SellerResponse;
 import dev.hkb.ananta.user.UserMapper;
+import dev.hkb.ananta.user.UserRepository;
+import dev.hkb.ananta.user.Users;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 

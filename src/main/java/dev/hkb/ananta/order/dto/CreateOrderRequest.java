@@ -1,4 +1,4 @@
-package dev.hkb.ananta.dto.order;
+package dev.hkb.ananta.order.dto;
 
 public record CreateOrderRequest(
 //        Long userId we give it via auth in service

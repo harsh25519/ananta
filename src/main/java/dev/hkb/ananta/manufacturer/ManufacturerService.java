@@ -1,14 +1,14 @@
-package dev.hkb.ananta.service;
+package dev.hkb.ananta.manufacturer;
 
-import dev.hkb.ananta.dto.manufacturer.CreateManufacturerRequest;
-import dev.hkb.ananta.dto.manufacturer.ManufacturerResponse;
+import dev.hkb.ananta.manufacturer.dto.CreateManufacturerRequest;
+import dev.hkb.ananta.manufacturer.dto.ManufacturerResponse;
 import dev.hkb.ananta.product.dto.ProductResponse;
-import jakarta.validation.Valid;
 
 import java.util.List;
 
 public interface ManufacturerService {
-    ManufacturerResponse addManufacturer(@Valid CreateManufacturerRequest cmr);
+
+    ManufacturerResponse addManufacturer(CreateManufacturerRequest cmr);
 
     List<ManufacturerResponse> getAllManufacturers();
 

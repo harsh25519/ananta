@@ -1,9 +1,8 @@
-package dev.hkb.ananta.controller;
+package dev.hkb.ananta.manufacturer;
 
-import dev.hkb.ananta.dto.manufacturer.CreateManufacturerRequest;
-import dev.hkb.ananta.dto.manufacturer.ManufacturerResponse;
+import dev.hkb.ananta.manufacturer.dto.CreateManufacturerRequest;
+import dev.hkb.ananta.manufacturer.dto.ManufacturerResponse;
 import dev.hkb.ananta.product.dto.ProductResponse;
-import dev.hkb.ananta.service.ManufacturerService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;

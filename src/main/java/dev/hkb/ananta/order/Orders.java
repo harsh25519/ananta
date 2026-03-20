@@ -1,4 +1,4 @@
-package dev.hkb.ananta.entity;
+package dev.hkb.ananta.order;
 
 import dev.hkb.ananta.address.Address;
 import dev.hkb.ananta.constants.CurrencyEnum;

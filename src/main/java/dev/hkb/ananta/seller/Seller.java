@@ -1,4 +1,4 @@
-package dev.hkb.ananta.entity;
+package dev.hkb.ananta.seller;
 
 import dev.hkb.ananta.constants.CountryEnum;
 import dev.hkb.ananta.constants.StateEnum;

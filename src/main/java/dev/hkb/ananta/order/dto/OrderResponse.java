@@ -1,7 +1,7 @@
-package dev.hkb.ananta.dto.order;
+package dev.hkb.ananta.order.dto;
 
-import dev.hkb.ananta.constants.OrderStatus;
 import dev.hkb.ananta.address.dto.AddressResponse;
+import dev.hkb.ananta.constants.OrderStatus;
 
 import java.math.BigDecimal;
 import java.time.OffsetDateTime;

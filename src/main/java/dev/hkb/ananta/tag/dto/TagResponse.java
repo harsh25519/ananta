@@ -1,4 +1,4 @@
-package dev.hkb.ananta.dto.tag;
+package dev.hkb.ananta.tag.dto;
 
 public record TagResponse(Long id,
                           String tag

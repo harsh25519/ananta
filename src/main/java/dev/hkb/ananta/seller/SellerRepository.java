@@ -1,6 +1,5 @@
-package dev.hkb.ananta.dao;
+package dev.hkb.ananta.seller;
 
-import dev.hkb.ananta.entity.Seller;
 import dev.hkb.ananta.user.Users;
 import org.springframework.data.jpa.repository.JpaRepository;
 

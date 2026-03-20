@@ -1,4 +1,4 @@
-package dev.hkb.ananta.dto.cart;
+package dev.hkb.ananta.cart.dto;
 
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;

@@ -1,8 +1,9 @@
-package dev.hkb.ananta.entity;
+package dev.hkb.ananta.payment;
 
 import dev.hkb.ananta.constants.CurrencyEnum;
 import dev.hkb.ananta.constants.PaymentMethod;
 import dev.hkb.ananta.constants.PaymentStatus;
+import dev.hkb.ananta.order.Orders;
 import jakarta.persistence.*;
 import org.hibernate.annotations.CreationTimestamp;
 

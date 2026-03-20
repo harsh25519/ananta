@@ -1,9 +1,9 @@
 package dev.hkb.ananta.product;
 
 import dev.hkb.ananta.constants.ProductStatus;
-import dev.hkb.ananta.entity.Category;
-import dev.hkb.ananta.entity.Manufacturer;
-import dev.hkb.ananta.entity.Tag;
+import dev.hkb.ananta.manufacturer.Manufacturer;
+import dev.hkb.ananta.category.Category;
+import dev.hkb.ananta.tag.Tag;
 import jakarta.persistence.*;
 import org.hibernate.annotations.CreationTimestamp;
 

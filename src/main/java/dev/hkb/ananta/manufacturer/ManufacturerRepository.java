@@ -1,6 +1,5 @@
-package dev.hkb.ananta.dao;
+package dev.hkb.ananta.manufacturer;
 
-import dev.hkb.ananta.entity.Manufacturer;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;

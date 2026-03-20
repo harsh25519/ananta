@@ -1,8 +1,7 @@
-package dev.hkb.ananta.mapper;
+package dev.hkb.ananta.seller;
 
-import dev.hkb.ananta.dto.seller.CreateSellerRequest;
-import dev.hkb.ananta.dto.seller.SellerResponse;
-import dev.hkb.ananta.entity.Seller;
+import dev.hkb.ananta.seller.dto.CreateSellerRequest;
+import dev.hkb.ananta.seller.dto.SellerResponse;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 

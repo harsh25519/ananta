@@ -1,13 +1,10 @@
-package dev.hkb.ananta.service;
+package dev.hkb.ananta.manufacturer;
 
-import dev.hkb.ananta.dao.ManufacturerRepository;
-import dev.hkb.ananta.product.ProductRepository;
-import dev.hkb.ananta.dto.manufacturer.CreateManufacturerRequest;
-import dev.hkb.ananta.dto.manufacturer.ManufacturerResponse;
-import dev.hkb.ananta.product.dto.ProductResponse;
-import dev.hkb.ananta.entity.Manufacturer;
-import dev.hkb.ananta.mapper.ManufacturerMapper;
+import dev.hkb.ananta.manufacturer.dto.CreateManufacturerRequest;
+import dev.hkb.ananta.manufacturer.dto.ManufacturerResponse;
 import dev.hkb.ananta.product.ProductMapper;
+import dev.hkb.ananta.product.ProductRepository;
+import dev.hkb.ananta.product.dto.ProductResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

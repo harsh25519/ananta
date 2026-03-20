@@ -1,6 +1,5 @@
-package dev.hkb.ananta.dao;
+package dev.hkb.ananta.cart;
 
-import dev.hkb.ananta.entity.Cart;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface CartRepository extends JpaRepository<Cart, Long> {
