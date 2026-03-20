@@ -1,0 +1,59 @@
+package dev.hkb.ananta.controller;
+
+import dev.hkb.ananta.dto.manufacturer.CreateManufacturerRequest;
+import dev.hkb.ananta.dto.manufacturer.ManufacturerResponse;
+import dev.hkb.ananta.product.dto.ProductResponse;
+import dev.hkb.ananta.service.ManufacturerService;
+import jakarta.validation.Valid;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+
+@RestController
+@RequestMapping("/manufacturers")
+@PreAuthorize("hasRole('ADMIN')")
+public class ManufacturerController {
+
+    private final ManufacturerService manufacturerService;
+
+    @Autowired
+    public ManufacturerController(ManufacturerService manufacturerService) {
+        this.manufacturerService = manufacturerService;
+    }
+
+    // create manufacturer by admin
+    @PostMapping
+    public ResponseEntity<?> createManufacturer(@Valid @RequestBody CreateManufacturerRequest cmr){
+        ManufacturerResponse mr = manufacturerService.addManufacturer(cmr);
+
+        return new ResponseEntity<>(mr, HttpStatus.CREATED);
+    }
+
+    // get manufacturer list
+    @GetMapping
+    public ResponseEntity<?> getManufacturerList(){
+        List<ManufacturerResponse> list = manufacturerService.getAllManufacturers();
+        return ResponseEntity.ok(list);
+    }
+
+    // get list of products by a brand or manufacturer
+    @GetMapping("/{brandName}/products")
+    public ResponseEntity<?> getProducts(@PathVariable String brandName){
+        List<ProductResponse> products = manufacturerService.getProducts(brandName);
+        return ResponseEntity.ok(products);
+    }
+
+    // delete a manufacturer
+    @DeleteMapping("/{manufacturerId}")
+    public ResponseEntity<?> deleteManufacturer(@PathVariable Long manufacturerId){
+        manufacturerService.deleteManufacturer(manufacturerId);
+
+        return ResponseEntity.ok("Manufacturer Deleted");
+    }
+
+
+}
