@@ -11,8 +11,6 @@ import java.math.BigDecimal;
 public record CreateSellerProductRequest(
         @NotNull Long productId,
 
-        @NotNull Long sellerId,
-
         @NotNull
         @PositiveOrZero
         @Digits(integer = 8, fraction = 2)
