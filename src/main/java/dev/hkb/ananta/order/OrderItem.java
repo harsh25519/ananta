@@ -82,4 +82,8 @@ public class OrderItem {
         this.quantity = quantity;
     }
 
+    public BigDecimal getTotalPrice(){
+        return purchasePrice.multiply(BigDecimal.valueOf(quantity));
+    }
+
 }

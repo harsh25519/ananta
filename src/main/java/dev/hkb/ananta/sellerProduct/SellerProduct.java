@@ -49,7 +49,6 @@ public class SellerProduct {
     }
 
     //Getters And Setters
-
     public Long getId() {
         return id;
     }

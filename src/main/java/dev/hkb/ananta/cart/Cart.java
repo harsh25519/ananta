@@ -18,8 +18,11 @@ public class Cart {
     @JoinColumn(name = "customer_id", unique = true)
     private Users user;
 
-    @OneToMany(mappedBy = "cart")
-    private List<CartItem> CartItem;
+    @OneToMany(mappedBy = "cart", fetch = FetchType.LAZY,
+            cascade = CascadeType.ALL,
+            orphanRemoval = true
+    )
+    private List<CartItem> cartItems;
 
     // Constructors
     public Cart() {
@@ -44,5 +47,13 @@ public class Cart {
 
     public void setUser(Users user) {
         this.user = user;
+    }
+
+    public List<CartItem> getCartItems() {
+        return cartItems;
+    }
+
+    public void setCartItems(List<CartItem> cartItems) {
+        this.cartItems = cartItems;
     }
 }

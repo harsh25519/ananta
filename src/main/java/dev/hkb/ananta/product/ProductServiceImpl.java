@@ -30,6 +30,8 @@ import java.util.Set;
 @Service
 public class ProductServiceImpl implements ProductService{
 
+    private final int MAX_STOCK = 50;
+
     private final ManufacturerRepository manufacturerRepository;
     private final CategoryRepository categoryRepository;
     private final ProductRepository productRepository;
@@ -117,7 +119,7 @@ public class ProductServiceImpl implements ProductService{
             listing = existing.get();
 
             int qty = listing.getQuantity() + request.quantity();
-            if(qty > masterProduct.getMaxManufacturingLimit()){
+            if(qty > MAX_STOCK){
                 throw new RuntimeException("Quantity should be less than max manufacturing limit");
             }
 

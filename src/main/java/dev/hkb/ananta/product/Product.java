@@ -52,9 +52,6 @@ public class Product {
     )
     private Set<Tag> tagSet = new HashSet<>();
 
-    // all seller can ask less than this limit
-    private int MaxManufacturingLimit = 50;
-
     //Constructors
     public Product() {
     }
@@ -139,13 +136,5 @@ public class Product {
 
     public void setTagSet(Set<Tag> tagSet) {
         this.tagSet = tagSet;
-    }
-
-    public int getMaxManufacturingLimit() {
-        return MaxManufacturingLimit;
-    }
-
-    public void setMaxManufacturingLimit(int maxManufacturingLimit) {
-        MaxManufacturingLimit = maxManufacturingLimit;
     }
 }

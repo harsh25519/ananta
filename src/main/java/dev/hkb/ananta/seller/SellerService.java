@@ -5,7 +5,6 @@ import dev.hkb.ananta.seller.dto.SellerResponse;
 
 public interface SellerService {
 
-
     SellerResponse applyForSeller(CreateSellerRequest sellerDto, String email);
 
     SellerResponse findByEmail(String username);

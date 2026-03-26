@@ -8,6 +8,10 @@ public record CartItemResponse(
         Long productId,
         String productName,
         int quantity,
-        BigDecimal price
+        BigDecimal price,
+        BigDecimal itemTotal
 ) {
+    public CartItemResponse{
+        itemTotal = price.multiply(BigDecimal.valueOf(quantity));
+    }
 }
