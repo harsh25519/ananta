@@ -14,7 +14,7 @@ import java.util.Map;
 import java.util.Set;
 
 @RestController
-@RequestMapping("/product")
+@RequestMapping("/products")
 public class ProductController {
 
     private final ProductService productService;
@@ -24,14 +24,16 @@ public class ProductController {
         this.productService = productService;
     }
 
+    /// Create Product by ADMIN
     @PostMapping
     public ResponseEntity<?> createProduct(@Valid @RequestBody CreateProductRequest cpr){
         ProductResponse product = productService.createProduct(cpr);
         return ResponseEntity.ok(product);
     }
 
-    // update it later with parameter for searching and sorting
-    // get product to sell by seller
+    /// update it later with parameter for searching and sorting
+    /// get product to sell by seller
+    /// Here Seller can see products which he/she can list to sell
     @GetMapping
     public ResponseEntity<?> getProductsToSell(
             @RequestParam(required = false) Long category,
@@ -40,7 +42,8 @@ public class ProductController {
         return ResponseEntity.ok(productService.getProducts(category, tags));
     }
 
-    @PostMapping("/apply")
+    /// Seller can apply to sell a particular item from the above list
+    @PostMapping("/applications")
     public ResponseEntity<?> applyToSell(@Valid @RequestBody CreateSellerProductRequest request,
                                          @AuthenticationPrincipal UserPrincipal userPrincipal){
         productService.sellerApplyToProduct(request, userPrincipal.getUsername());
@@ -50,11 +53,13 @@ public class ProductController {
         ));
     }
 
-    @GetMapping("/queue")
+    /// Admin can get pending request queued
+    @GetMapping("/pending")
     public ResponseEntity<?> getPendingQueue(){
         return ResponseEntity.ok(productService.getPendingApprovals());
     }
 
+    /// Admin can approve any pending request
     @PostMapping("/approve/{listingId}")
     public ResponseEntity<?> resolveRequest(@PathVariable Long listingId,
                                             @RequestParam(defaultValue = "true") boolean status){

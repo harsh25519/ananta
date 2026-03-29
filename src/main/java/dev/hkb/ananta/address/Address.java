@@ -14,7 +14,9 @@ public class Address {
     @Column(name = "id")
     private Long id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY,
+            cascade = {CascadeType.DETACH, CascadeType.REFRESH, CascadeType.PERSIST, CascadeType.MERGE}
+    )
     @JoinColumn(name = "users_id", nullable = false)
     private Users user;
 

@@ -15,5 +15,5 @@ public interface UserService {
 
     void deleteCurrentUser(String email);
 
-    public String verifyUser(LoginDTO loginDTO);
+    String verifyUser(LoginDTO loginDTO);
 }

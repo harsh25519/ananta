@@ -21,17 +21,17 @@ public class SellerController {
         this.sellerService = sellerService;
     }
 
-    // already existing user apply for seller role
-    @PostMapping("/apply")
+    /// Already existing customer can apply for seller
+    @PostMapping("/applications")
     public ResponseEntity<?> applyForSeller(@Valid @RequestBody CreateSellerRequest csr,
                                             @AuthenticationPrincipal UserPrincipal principal){
         SellerResponse sr = sellerService.applyForSeller(csr, principal.getUsername());
         return ResponseEntity.ok(sr);
     }
 
-    // get profile for seller
+    /// Get profile for Seller
     @PreAuthorize("hasRole('SELLER')")
-    @GetMapping("/profile")
+    @GetMapping("/me")
     public ResponseEntity<?> getSellerProfile(@AuthenticationPrincipal UserPrincipal principal){
         SellerResponse sr = sellerService.findByEmail(principal.getUsername());
         return ResponseEntity.ok(sr);

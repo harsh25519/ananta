@@ -17,6 +17,5 @@ public interface SellerProductService {
 
     SellerProductFullResponse showSellerProduct(Long sellerProductId, String email);
 
-//    void deleteProduct(Long sellerProductId, String email);
-
+    void deleteProduct(Long sellerProductId, String email);
 }

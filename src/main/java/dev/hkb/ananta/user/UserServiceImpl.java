@@ -1,6 +1,9 @@
 package dev.hkb.ananta.user;
 
+import dev.hkb.ananta.address.AddressRepository;
+import dev.hkb.ananta.cart.CartRepository;
 import dev.hkb.ananta.constants.UserRoles;
+import dev.hkb.ananta.security.utils.EmailService;
 import dev.hkb.ananta.user.dto.CreateUserRequest;
 import dev.hkb.ananta.user.dto.LoginDTO;
 import dev.hkb.ananta.user.dto.UserResponse;
@@ -21,19 +24,25 @@ public class UserServiceImpl implements UserService {
 
     private final JwtUtilService jwtUtilService;
     private final AuthenticationManager authenticationManager;
-    private UserRepository userRepo;
-    private PasswordEncoder passwordEncoder;
-    private UserMapper userMapper;
+    private final AddressRepository addressRepository;
+    private final CartRepository cartRepository;
+    private final UserRepository userRepo;
+    private final PasswordEncoder passwordEncoder;
+    private final UserMapper userMapper;
+    private final EmailService emailService;
 
     @Autowired
     public UserServiceImpl(UserRepository userRepo, PasswordEncoder passwordEncoder,
                            JwtUtilService jwtUtilService, AuthenticationManager authenticationManager,
-                           UserMapper userMapper) {
+                           UserMapper userMapper, AddressRepository addressRepository, CartRepository cartRepository, EmailService emailService) {
         this.userRepo = userRepo;
         this.passwordEncoder  = passwordEncoder;
         this.jwtUtilService = jwtUtilService;
         this.authenticationManager = authenticationManager;
         this.userMapper = userMapper;
+        this.addressRepository = addressRepository;
+        this.cartRepository = cartRepository;
+        this.emailService = emailService;
     }
 
     @Override
@@ -73,10 +82,16 @@ public class UserServiceImpl implements UserService {
     @Override
     @Transactional
     public UserResponse save(CreateUserRequest userDto) {
+
+        String rawPassword = userDto.password();
+
         Users user = userMapper.toEntity(userDto);
         user.setPassword(passwordEncoder.encode(userDto.password()));
         user.setRole(UserRoles.CUSTOMER);
         Users u = userRepo.save(user);
+
+        emailService.sendMailToNewUser(u.getEmail(), rawPassword);
+
         UserResponse ur = userMapper.toDto(u);
         return ur;
     }
@@ -97,7 +112,12 @@ public class UserServiceImpl implements UserService {
         Users user = userRepo.findByEmail(email)
                 .orElseThrow(() ->
                         new IllegalStateException("Authenticated user not found in database"));
-        userRepo.delete(user);
+
+        // orphan removal of address and cart
+        addressRepository.deleteByUser_Id(user.getId());
+        cartRepository.deleteByUser_Id(user.getId());
+
+        userRepo.deleteById(user.getId());
     }
 
 }

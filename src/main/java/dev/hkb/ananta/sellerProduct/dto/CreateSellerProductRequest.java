@@ -1,6 +1,5 @@
 package dev.hkb.ananta.sellerProduct.dto;
 
-import dev.hkb.ananta.constants.ProductStatus;
 import jakarta.validation.constraints.Digits;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
@@ -16,8 +15,6 @@ public record CreateSellerProductRequest(
         @Digits(integer = 8, fraction = 2)
         BigDecimal price,
 
-        @Positive(message = "Enter a valid quantity") Integer quantity,
-
-        @NotNull ProductStatus status
+        @Positive(message = "Enter a valid quantity") Integer quantity
 ) {
 }

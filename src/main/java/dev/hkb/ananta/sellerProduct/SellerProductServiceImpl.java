@@ -92,7 +92,9 @@ public class SellerProductServiceImpl implements SellerProductService{
         if(request.price() != null)product.setPrice(request.price());
         if(request.productStatus() != null){
             if (product.getProductStatus() == ProductStatus.REJECTED ||
-                    product.getProductStatus() == ProductStatus.PENDING) {
+                    product.getProductStatus() == ProductStatus.PENDING ||
+                    product.getProductStatus() == ProductStatus.DISCONTINUED
+            ) {
                 throw new RuntimeException("Cannot activate a product that is not approved.");
             }
             if(request.productStatus() == ProductStatus.OUT_OF_STOCK){
@@ -137,18 +139,20 @@ public class SellerProductServiceImpl implements SellerProductService{
 
     }
 
-//    @Transactional
-//    @Override
-//    public void deleteProduct(Long sellerProductId, String email) {
-//
-//        SellerProduct sellerProduct = sellerProductRepository.findById(sellerProductId)
-//                .orElseThrow(() -> new RuntimeException("Seller product does not exist"));
-//
-//        if(!sellerProduct.getSeller().getUser().getEmail().equals(email)){
-//            throw new RuntimeException("User is not authorized");
-//        }
-//
-//        sellerProductRepository.delete(sellerProduct);
-//    }
+    @Transactional
+    @Override
+    public void deleteProduct(Long sellerProductId, String email) {
+
+        SellerProduct sellerProduct = sellerProductRepository.findById(sellerProductId)
+                .orElseThrow(() -> new RuntimeException("Seller product does not exist"));
+
+        if(!sellerProduct.getSeller().getUser().getEmail().equals(email)){
+            throw new RuntimeException("User is not authorized");
+        }
+
+        sellerProduct.setProductStatus(ProductStatus.DISCONTINUED);
+
+        sellerProductRepository.save(sellerProduct);
+    }
 
 }

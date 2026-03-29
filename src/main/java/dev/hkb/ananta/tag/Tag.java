@@ -18,7 +18,9 @@ public class Tag {
     @Column(name = "name")
     private String tag;
 
-    @ManyToMany(mappedBy = "tagSet")
+    @ManyToMany(mappedBy = "tagSet", fetch = FetchType.LAZY,
+            cascade = {CascadeType.REFRESH, CascadeType.DETACH, CascadeType.PERSIST, CascadeType.MERGE}
+    )
     private Set<Product> productSet = new HashSet<>();
 
     //Constructors

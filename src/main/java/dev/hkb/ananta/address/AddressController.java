@@ -22,14 +22,14 @@ public class AddressController {
         this.addressService = addressService;
     }
 
-    // return the address list of the logged in user
+    /// It returns a list of address assigned to the logged in User
     @GetMapping
     public ResponseEntity<?> getAddressList(@AuthenticationPrincipal UserPrincipal principal){
         List<AddressResponse> addresses = addressService.getAddressList(principal);
         return ResponseEntity.ok(addresses);
     }
 
-    // create address for user
+    /// Only Customer can add Address for themselves
     @PostMapping
     public ResponseEntity<?> addAddress(@Valid @RequestBody CreateAddressRequest car,
                                         @AuthenticationPrincipal UserPrincipal principal){
@@ -37,12 +37,13 @@ public class AddressController {
         return new ResponseEntity<>(addr, HttpStatus.CREATED);
     }
 
-    // delete address
-    @DeleteMapping("/{addrId}")
-    public ResponseEntity<?> deleteAddress(@PathVariable Long addrId,
-                                           @AuthenticationPrincipal UserPrincipal principal){
-        addressService.deleteAddress(addrId, principal);
-        return ResponseEntity.ok("Address Deleted");
-    }
+    /// Customer can delete address which is not required
+    /// Might create an orphan child
+//    @DeleteMapping("/{addrId}")
+//    public ResponseEntity<?> deleteAddress(@PathVariable Long addrId,
+//                                           @AuthenticationPrincipal UserPrincipal principal){
+//        addressService.deleteAddress(addrId, principal);
+//        return ResponseEntity.ok("Address Deleted");
+//    }
 
 }

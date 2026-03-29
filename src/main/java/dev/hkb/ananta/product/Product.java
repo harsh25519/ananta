@@ -30,11 +30,15 @@ public class Product {
     @Column(name = "price", precision = 10, scale = 2, nullable = false)
     private BigDecimal price;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY,
+            cascade = {CascadeType.MERGE, CascadeType.DETACH, CascadeType.PERSIST, CascadeType.REFRESH}
+    )
     @JoinColumn(name = "category_id", nullable = false)
     private Category category;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY,
+            cascade = {CascadeType.MERGE, CascadeType.DETACH, CascadeType.PERSIST, CascadeType.REFRESH}
+    )
     @JoinColumn(name = "manufacturer_id", nullable = false)
     private Manufacturer manufacturer;
 
@@ -45,7 +49,8 @@ public class Product {
     @Column(name = "created_at")
     private OffsetDateTime createdAt;
 
-    @ManyToMany(fetch = FetchType.LAZY)
+    @ManyToMany(fetch = FetchType.LAZY,
+            cascade = {CascadeType.MERGE, CascadeType.DETACH, CascadeType.PERSIST, CascadeType.REFRESH})
     @JoinTable(name = "product_tag",
             joinColumns = @JoinColumn(name ="product_id"),
             inverseJoinColumns = @JoinColumn(name = "tag_id")

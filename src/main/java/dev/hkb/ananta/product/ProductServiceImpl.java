@@ -3,6 +3,7 @@ package dev.hkb.ananta.product;
 import dev.hkb.ananta.category.Category;
 import dev.hkb.ananta.category.CategoryRepository;
 import dev.hkb.ananta.constants.ProductStatus;
+import dev.hkb.ananta.constants.StatusEnum;
 import dev.hkb.ananta.manufacturer.Manufacturer;
 import dev.hkb.ananta.manufacturer.ManufacturerRepository;
 import dev.hkb.ananta.product.dto.CreateProductRequest;
@@ -67,6 +68,9 @@ public class ProductServiceImpl implements ProductService{
         // resolving fields that we intentionally ignored at mapper
         Manufacturer manufacturer = manufacturerRepository.findById(cpr.manufacturerId())
                 .orElseThrow(() -> new RuntimeException("Manufacturer does not exist"));
+        if(manufacturer.getStatus().equals(StatusEnum.INACTIVE)){
+            throw new RuntimeException("Manufacturer has become inactive.");
+        }
 
         Category category = categoryRepository.findById(cpr.categoryId())
                 .orElseThrow(() -> new RuntimeException("Category does not exist"));

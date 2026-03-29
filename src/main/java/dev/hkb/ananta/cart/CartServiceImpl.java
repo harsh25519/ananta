@@ -2,7 +2,6 @@ package dev.hkb.ananta.cart;
 
 import dev.hkb.ananta.cart.dto.CartResponse;
 import dev.hkb.ananta.cart.dto.CreateCartItemRequest;
-import dev.hkb.ananta.security.utils.UserPrincipal;
 import dev.hkb.ananta.sellerProduct.SellerProduct;
 import dev.hkb.ananta.sellerProduct.SellerProductRepository;
 import dev.hkb.ananta.user.UserRepository;
@@ -73,6 +72,9 @@ public class CartServiceImpl implements CartService{
         CartItem cartItem;
         if(existing.isPresent()){
             cartItem = existing.get();
+            if (sellerProduct.getQuantity() < cartItem.getQuantity() + request.quantity()) {
+                throw new RuntimeException("Only " + sellerProduct.getQuantity() + " units available");
+            }
             cartItem.setQuantity(cartItem.getQuantity() + request.quantity());
         }else{
             cartItem = cartMapper.toCartItemEntity(request);
@@ -97,6 +99,9 @@ public class CartServiceImpl implements CartService{
         if(quantity > cartItem.getSellerProduct().getQuantity()){
             throw new RuntimeException("Insufficient stock for this update");
         }
+        if(quantity == 0){
+            return deleteItem(cartItemId, username);
+        }
         cartItem.setQuantity(quantity);
         cartItemRepository.save(cartItem);
 
@@ -105,13 +110,13 @@ public class CartServiceImpl implements CartService{
 
     @Transactional
     @Override
-    public CartResponse deleteItem(Long cartItemId, UserPrincipal principal) {
+    public CartResponse deleteItem(Long cartItemId, String username) {
         CartItem cartItem = cartItemRepository.findById(cartItemId)
                 .orElseThrow(() -> new RuntimeException("Cart Item not found"));
 
         Cart cart = cartItem.getCart();
 
-        if(!cartItem.getCart().getUser().getEmail().equals(principal.getUsername())){
+        if(!cartItem.getCart().getUser().getEmail().equals(username)){
             throw new RuntimeException("User not authorized");
         }
 
@@ -132,8 +137,8 @@ public class CartServiceImpl implements CartService{
         // we can also do it manually by traversing cartItemsRepo and deleting every item with cart id
         cart.getCartItems().clear();
 
-        cartRepository.save(cart);
+        Cart savedCart = cartRepository.saveAndFlush(cart);
 
-        return cartMapper.toCartDto(cart);
+        return cartMapper.toCartDto(savedCart);
     }
 }

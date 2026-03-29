@@ -15,4 +15,5 @@ public interface ManufacturerService {
     List<ProductResponse> getProducts(String brandName);
 
     void deleteManufacturer(Long manufacturerId);
+
 }

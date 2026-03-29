@@ -62,6 +62,19 @@ public class CategoryServiceImpl implements CategoryService{
         Category category = categoryRepository.findById(categoryId)
                 .orElseThrow(() -> new RuntimeException("Category does not exist"));
 
+        if (category.getName().equalsIgnoreCase("General")) {
+            throw new RuntimeException("The General category is a system default and cannot be deleted.");
+        }
+
+        Category generalCategory = categoryRepository.findByName("General")
+                .orElseGet(() -> {
+                    Category c = new Category();
+                    c.setName("General");
+                    return categoryRepository.save(c);
+                });
+
+        productRepository.updateCategoryForProducts(categoryId, generalCategory);
+
         categoryRepository.delete(category);
     }
 }

@@ -6,7 +6,7 @@ import org.springframework.data.jpa.domain.Specification;
 
 import java.util.Set;
 
-///  The Powerful specification used to eliminate nested query part
+///  The Powerful specification used to eliminate nested query part and can be used for dynamic queries
 public class SellerProductSpecs {
 
     // 1. Fuzzy Name Match (Postgres similarity > 0.3) using Fuzzy Matching

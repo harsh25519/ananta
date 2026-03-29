@@ -13,7 +13,7 @@ import java.util.List;
 import java.util.Map;
 
 @RestController
-@RequestMapping("/product")
+@RequestMapping("/products")
 public class ReviewController {
 
     private final ReviewService reviewService;
@@ -23,6 +23,7 @@ public class ReviewController {
         this.reviewService = reviewService;
     }
 
+    /// Create Review for a product by CUSTOMER ONLY
     @PostMapping("/{productId}/reviews")
     public ResponseEntity<?> giveReview(@PathVariable Long productId,
                                         @Valid @RequestBody CreateReviewRequest request,
@@ -31,6 +32,7 @@ public class ReviewController {
         return ResponseEntity.ok(reviewResponse);
     }
 
+    /// Get list of reviews for a particular product can be accessed by anyone
     @GetMapping("/{productId}/reviews")
     public ResponseEntity<?> getReviews(@PathVariable Long productId){
 
@@ -38,12 +40,14 @@ public class ReviewController {
         return ResponseEntity.ok(reviews);
     }
 
+    /// Get a list of all reviews done by me
     @GetMapping("/reviews")
     public ResponseEntity<?> getMyReviews(@AuthenticationPrincipal UserPrincipal principal){
         List<ReviewResponse> review = reviewService.getMyReviews(principal.getUsername());
         return ResponseEntity.ok(review);
     }
 
+    /// Customer can delete his or her review
     @DeleteMapping("/{productId}/reviews")
     public ResponseEntity<?> deleteReview(@PathVariable Long productId,
                                           @AuthenticationPrincipal UserPrincipal principal){

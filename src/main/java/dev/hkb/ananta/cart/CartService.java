@@ -2,7 +2,6 @@ package dev.hkb.ananta.cart;
 
 import dev.hkb.ananta.cart.dto.CartResponse;
 import dev.hkb.ananta.cart.dto.CreateCartItemRequest;
-import dev.hkb.ananta.security.utils.UserPrincipal;
 
 public interface CartService {
 
@@ -12,7 +11,7 @@ public interface CartService {
 
     CartResponse updateCartItem(Long cartItemId, Integer quantity, String username);
 
-    CartResponse deleteItem(Long cartItemId, UserPrincipal principal);
+    CartResponse deleteItem(Long cartItemId, String username);
 
     CartResponse clearCart(String email);
 }

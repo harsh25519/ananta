@@ -50,6 +50,10 @@ public class AddressServiceImpl implements AddressService {
         Users user = userRepository.findByEmail(principal.getUsername())
                 .orElseThrow(() -> new AccessDeniedException("User not authenticated."));
 
+        if(user.getRole().equals(UserRoles.SELLER)){
+            throw new RuntimeException("Seller is not authorized to access multiple addresses.");
+        }
+
         List<AddressResponse> addresses = addressRepository.findAllByUserId(user.getId())
                 .stream()
                 .map(addressMapper::toDto)

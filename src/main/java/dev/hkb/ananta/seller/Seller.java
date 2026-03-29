@@ -14,7 +14,9 @@ public class Seller {
     private Long id;
 
     @MapsId
-    @OneToOne(fetch = FetchType.LAZY)
+    @OneToOne(fetch = FetchType.LAZY,
+            cascade = {CascadeType.DETACH, CascadeType.REFRESH, CascadeType.PERSIST, CascadeType.MERGE}
+    )
     @JoinColumn(name = "users_id")
     private Users user;
 

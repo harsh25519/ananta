@@ -4,6 +4,7 @@ import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
@@ -16,7 +17,8 @@ import java.util.function.Function;
 @Service
 public class JwtUtilService {
 
-    private final String SECRET_KEY = "poLzOcjs8ipC4rP6mLKREjC3vJBaVsodT0qMtiIiJkw=";
+    @Value("${SECRET_KEY}")
+    private String SECRET_KEY;
 
     public String generateToken(String email){
         Map<String, Object> claims = new HashMap<>();
@@ -25,7 +27,7 @@ public class JwtUtilService {
                 .add(claims)
                 .subject(email)
                 .issuedAt(new Date(System.currentTimeMillis()))
-                .expiration(new Date(System.currentTimeMillis() + 1000*60))
+                .expiration(new Date(System.currentTimeMillis() + 1000*60*60*24*3)) // Expiration time 3 days
                 .and()
                 .signWith(getSigningKey())
                 .compact();

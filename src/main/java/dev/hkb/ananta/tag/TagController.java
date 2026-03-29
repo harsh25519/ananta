@@ -13,25 +13,28 @@ import java.util.List;
 @RequestMapping("/tags")
 public class TagController {
 
-    private TagService tagService;
+    private final TagService tagService;
 
     @Autowired
     public TagController(TagService tagService) {
         this.tagService = tagService;
     }
 
+    /// Admin or Seller will create tags for the products
     @PostMapping
     public ResponseEntity<?> createTag(@Valid @RequestBody CreateTagRequest ctr){
         TagResponse tag = tagService.addTag(ctr);
         return ResponseEntity.ok(tag);
     }
 
+    /// Any user can get all tags
     @GetMapping
     public ResponseEntity<?> getAllTags(){
         List<TagResponse> tags = tagService.getTags();
         return ResponseEntity.ok(tags);
     }
 
+    ///  Delete tags and remove from products (ADMIN ONLY)
     @DeleteMapping("/{tagId}")
     public ResponseEntity<?> deleteTag(@PathVariable Long tagId){
         tagService.deleteTag(tagId);

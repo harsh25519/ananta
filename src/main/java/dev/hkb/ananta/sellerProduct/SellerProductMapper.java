@@ -15,8 +15,10 @@ public interface SellerProductMapper {
 
     @Mapping(target = "productId", expression = "java(sellerProduct.getProduct().getId())")
     @Mapping(target = "productName", expression = "java(sellerProduct.getProduct().getName())")
+    @Mapping(target = "sellerProductId", source = "id")
     @Mapping(target = "sellerId", expression = "java(sellerProduct.getSeller().getId())")
     @Mapping(target = "sellerName", expression = "java(sellerProduct.getSeller().getUser().getFirstName())")
+    @Mapping(target = "status", source = "productStatus")
     SellerProductBaseResponse toBaseDto(SellerProduct sellerProduct);
 
     @Mapping(target = "productId", expression = "java(sellerProduct.getProduct().getId())")
@@ -24,6 +26,7 @@ public interface SellerProductMapper {
     @Mapping(target = "sellerId", expression = "java(sellerProduct.getSeller().getId())")
     @Mapping(target = "sellerName", expression = "java(sellerProduct.getSeller().getUser().getFirstName())")
     @Mapping(target = "productDescription", expression = "java(sellerProduct.getProduct().getDescription())")
+    @Mapping(source = "sellerProduct.productStatus", target = "status")
     // take these as arguments in method call
     @Mapping(target = "averageRating", source = "avgRating")
     @Mapping(target = "ratings", source = "ratingCount")

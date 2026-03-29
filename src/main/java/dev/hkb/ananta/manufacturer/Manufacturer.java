@@ -25,7 +25,9 @@ public class Manufacturer {
     @Enumerated(EnumType.STRING)
     private StatusEnum status;
 
-    @OneToMany(mappedBy = "manufacturer")
+    @OneToMany(mappedBy = "manufacturer", fetch = FetchType.LAZY,
+            cascade = {CascadeType.DETACH, CascadeType.REFRESH, CascadeType.MERGE, CascadeType.PERSIST}
+    )
     private List<Product> products;
 
     // Constructors

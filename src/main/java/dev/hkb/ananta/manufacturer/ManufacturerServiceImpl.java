@@ -1,5 +1,6 @@
 package dev.hkb.ananta.manufacturer;
 
+import dev.hkb.ananta.constants.StatusEnum;
 import dev.hkb.ananta.manufacturer.dto.CreateManufacturerRequest;
 import dev.hkb.ananta.manufacturer.dto.ManufacturerResponse;
 import dev.hkb.ananta.product.ProductMapper;
@@ -56,13 +57,14 @@ public class ManufacturerServiceImpl implements ManufacturerService{
                 .toList();
     }
 
+    /// Cannot delete manufacturer for past order constraints
     @Transactional
     @Override
     public void deleteManufacturer(Long manufacturerId) {
         Manufacturer manufacturer = manufacturerRepository.findById(manufacturerId)
                 .orElseThrow(() -> new RuntimeException("Manufacturer not found"));
-
-        manufacturerRepository.delete(manufacturer);
+        manufacturer.setStatus(StatusEnum.INACTIVE);
+        manufacturerRepository.save(manufacturer);
     }
 
 }

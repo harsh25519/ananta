@@ -7,14 +7,12 @@ import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
 @RequestMapping("/manufacturers")
-@PreAuthorize("hasRole('ADMIN')")
 public class ManufacturerController {
 
     private final ManufacturerService manufacturerService;
@@ -24,7 +22,7 @@ public class ManufacturerController {
         this.manufacturerService = manufacturerService;
     }
 
-    // create manufacturer by admin
+    /// creation of manufacturer by admin
     @PostMapping
     public ResponseEntity<?> createManufacturer(@Valid @RequestBody CreateManufacturerRequest cmr){
         ManufacturerResponse mr = manufacturerService.addManufacturer(cmr);
@@ -32,14 +30,14 @@ public class ManufacturerController {
         return new ResponseEntity<>(mr, HttpStatus.CREATED);
     }
 
-    // get manufacturer list
+    /// get manufacturer list by anyone
     @GetMapping
     public ResponseEntity<?> getManufacturerList(){
         List<ManufacturerResponse> list = manufacturerService.getAllManufacturers();
         return ResponseEntity.ok(list);
     }
 
-    // get list of products by a brand or manufacturer
+    /// get list of products by a brand or manufacturer anyone can call
     @GetMapping("/{brandName}/products")
     public ResponseEntity<?> getProducts(@PathVariable String brandName){
         List<ProductResponse> products = manufacturerService.getProducts(brandName);

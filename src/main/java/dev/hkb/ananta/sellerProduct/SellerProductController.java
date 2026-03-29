@@ -11,6 +11,7 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 @RestController
@@ -24,6 +25,7 @@ public class SellerProductController {
         this.sellerProductService = sellerProductService;
     }
 
+    /// Show all products at the front page
     @GetMapping("/browse")
     public ResponseEntity<?> getProducts(@RequestParam(required = false) String productName,
                                          @RequestParam(required = false) Long category,
@@ -34,7 +36,7 @@ public class SellerProductController {
         return ResponseEntity.ok(list);
     }
 
-    // mapping for products shown by seller
+    /// mapping for products shown by seller
     @GetMapping("/me")
     public ResponseEntity<?> getMyProducts(@AuthenticationPrincipal UserPrincipal principal){
         List<SellerProductBaseResponse> list = sellerProductService.getProductList(principal.getUsername());
@@ -42,14 +44,16 @@ public class SellerProductController {
         return ResponseEntity.ok(list);
     }
 
-    @PostMapping("/update")
-    public ResponseEntity<?> updatePriceAndStatus(Long sellerProductId,
+    /// Seller can update price and status of product anytime
+    @PutMapping("/{sellerProductId}")
+    public ResponseEntity<?> updatePriceAndStatus(@PathVariable Long sellerProductId,
                                                   @Valid @RequestBody UpdateSellerProductRequest request,
                                                   @AuthenticationPrincipal UserPrincipal userPrincipal){
         SellerProductBaseResponse response = sellerProductService.updateProduct(sellerProductId, request, userPrincipal.getUsername());
         return ResponseEntity.ok(response);
     }
 
+    /// See full description of product listed (Anyone authenticated)
     @GetMapping("/{sellerProductId}")
     public ResponseEntity<?> showSellerProduct(@PathVariable Long sellerProductId,
                                                @AuthenticationPrincipal UserPrincipal principal){
@@ -59,11 +63,11 @@ public class SellerProductController {
 
 
     /// cannot hard delete we can soft delete as otherwise it will create problem for old orders
-//    @DeleteMapping("/{sellerProductId}")
-//    public ResponseEntity<?> deleteSellerProduct(@PathVariable Long sellerProductId,
-//                                                  @AuthenticationPrincipal UserPrincipal principal){
-//        sellerProductService.deleteProduct(sellerProductId, principal.getUsername());
-//        return ResponseEntity.ok(Map.of("Message:" , "Seller Product Successfully Deleted"));
-//    }
+    @DeleteMapping("/{sellerProductId}")
+    public ResponseEntity<?> deleteSellerProduct(@PathVariable Long sellerProductId,
+                                                  @AuthenticationPrincipal UserPrincipal principal){
+        sellerProductService.deleteProduct(sellerProductId, principal.getUsername());
+        return ResponseEntity.ok(Map.of("Message:" , "Seller Product Successfully Deleted"));
+    }
 
 }

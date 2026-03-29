@@ -14,13 +14,14 @@ import java.util.List;
 @RequestMapping("/category")
 public class CategoryController {
 
-    private CategoryService categoryService;
+    private final CategoryService categoryService;
 
     @Autowired
     public CategoryController(CategoryService categoryService) {
         this.categoryService = categoryService;
     }
 
+    /// Category first created by Admin then only those categories can be applied to product
     @PostMapping
     public ResponseEntity<?> createCategory(@Valid @RequestBody CreateCategoryRequest csr){
         CategoryResponse categoryResponse = categoryService.addCategory(csr);
@@ -28,6 +29,7 @@ public class CategoryController {
         return ResponseEntity.ok(categoryResponse);
     }
 
+    /// Anyone can access category list
     @GetMapping
     public ResponseEntity<?> getCategoryList(){
         List<CategoryResponse> list = categoryService.getAllCategories();
@@ -35,12 +37,14 @@ public class CategoryController {
         return ResponseEntity.ok(list);
     }
 
+    /// Anyone can access products just by categories
     @GetMapping("/{category_id}/products")
     public ResponseEntity<?> getProducts(@PathVariable Long category_id){
         List<ProductResponse> products = categoryService.getProducts(category_id);
         return ResponseEntity.ok(products);
     }
 
+    /// Delete Category (ADMIN ONLY)
     @DeleteMapping("/{categoryId}")
     public ResponseEntity<?> deleteCategory(@PathVariable Long categoryId){
         categoryService.deleteCategory(categoryId);

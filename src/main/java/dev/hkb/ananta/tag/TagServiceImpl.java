@@ -1,7 +1,7 @@
 package dev.hkb.ananta.tag;
 
 
-import dev.hkb.ananta.product.ProductMapper;
+import dev.hkb.ananta.product.Product;
 import dev.hkb.ananta.product.ProductRepository;
 import dev.hkb.ananta.tag.dto.CreateTagRequest;
 import dev.hkb.ananta.tag.dto.TagResponse;
@@ -14,18 +14,15 @@ import java.util.List;
 @Service
 public class TagServiceImpl implements TagService{
 
-    private TagRepository tagRepository;
-    private TagMapper tagMapper;
-    private ProductRepository productRepository;
-    private ProductMapper productMapper;
+    private final TagRepository tagRepository;
+    private final TagMapper tagMapper;
+    private final ProductRepository productRepository;
 
     @Autowired
-    public TagServiceImpl(TagRepository tagRepository, TagMapper tagMapper,
-                          ProductRepository productRepository, ProductMapper productMapper) {
+    public TagServiceImpl(TagRepository tagRepository, TagMapper tagMapper, ProductRepository productRepository) {
         this.tagRepository = tagRepository;
         this.tagMapper = tagMapper;
         this.productRepository = productRepository;
-        this.productMapper = productMapper;
     }
 
     @Transactional
@@ -49,6 +46,14 @@ public class TagServiceImpl implements TagService{
     public void deleteTag(Long tagId) {
         Tag tag = tagRepository.findById(tagId)
                 .orElseThrow(() -> new RuntimeException("Tag does not exist"));
+
+        List<Product> products = productRepository.findAllByTagSet_Id(tagId);
+
+        for(Product p : products){
+            p.getTagSet().remove(tag);
+        }
+        productRepository.saveAll(products);
+
         tagRepository.delete(tag);
     }
 }

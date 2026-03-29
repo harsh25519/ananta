@@ -16,11 +16,11 @@ public class CartItem {
     @Column(name = "id")
     private Long id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY, cascade = {CascadeType.DETACH, CascadeType.REFRESH, CascadeType.MERGE, CascadeType.PERSIST})
     @JoinColumn(name = "cart_id", nullable = false)
     private Cart cart;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY, cascade = {CascadeType.DETACH, CascadeType.REFRESH, CascadeType.MERGE, CascadeType.PERSIST})
     @JoinColumn(name = "seller_product_id", nullable = false)
     private SellerProduct sellerProduct;
 

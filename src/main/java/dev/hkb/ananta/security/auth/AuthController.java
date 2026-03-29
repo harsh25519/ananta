@@ -18,21 +18,24 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/auth")
 public class AuthController {
 
-    private UserService userService;
+    private final UserService userService;
 
     @Autowired
     public AuthController(UserService userService) {
         this.userService = userService;
     }
 
-    // first time signup
+    /// First time signup available for all
+    /// Any person can apply for sign up
     @PostMapping("/signup")
     public ResponseEntity<?> addUser(@Valid @RequestBody CreateUserRequest userDto){
         UserResponse uto =  userService.save(userDto);
         return new ResponseEntity<>(uto, HttpStatus.CREATED);
     }
 
-    // login for jwt service
+    /// login for jwt service
+    /// This to login after user is signed in.
+    /// After login it will receive a Jwt token in response to login again for a certain period of time
     @PostMapping("/login")
     public ResponseEntity<?> verifyUser(@Valid @RequestBody LoginDTO loginDTO){
         String token = userService.verifyUser(loginDTO);

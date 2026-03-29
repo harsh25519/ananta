@@ -3,6 +3,7 @@ package dev.hkb.ananta.cart;
 import dev.hkb.ananta.user.Users;
 import jakarta.persistence.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -14,7 +15,7 @@ public class Cart {
     @Column(name = "id")
     private Long id;
 
-    @OneToOne(fetch = FetchType.LAZY)
+    @OneToOne(fetch = FetchType.LAZY, cascade = {CascadeType.DETACH, CascadeType.REFRESH, CascadeType.MERGE, CascadeType.PERSIST})
     @JoinColumn(name = "customer_id", unique = true)
     private Users user;
 
@@ -22,7 +23,7 @@ public class Cart {
             cascade = CascadeType.ALL,
             orphanRemoval = true
     )
-    private List<CartItem> cartItems;
+    private List<CartItem> cartItems = new ArrayList<>();
 
     // Constructors
     public Cart() {

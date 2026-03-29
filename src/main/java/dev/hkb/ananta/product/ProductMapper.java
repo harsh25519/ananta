@@ -18,6 +18,7 @@ public interface ProductMapper {
     @Mapping(target = "tagSet", ignore = true)
     Product toEntity(CreateProductRequest productRequest);
 
+    @Mapping(source = "id", target = "Id")
     @Mapping(target = "categoryName", expression = "java(product.getCategory().getName())")
     @Mapping(target = "manufacturerName", expression = "java(product.getManufacturer().getBrandName())")
     @Mapping(source = "tagSet", target = "tagNames")

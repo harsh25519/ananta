@@ -5,5 +5,6 @@ public enum ProductStatus {
     ACTIVE,     // Approved and visible to Customers
     HIDDEN,     // Seller wants to temporarily stop selling (vacation mode)
     REJECTED,   // Admin denied the seller's application (e.g., suspected fake goods)
-    OUT_OF_STOCK // Automatically set when quantity hits 0
+    OUT_OF_STOCK,// Automatically set when quantity hits 0
+    DISCONTINUED
 }
