@@ -12,6 +12,7 @@ public record SellerProductBaseResponse(
         String sellerName,
         BigDecimal price,
         int quantity,
-        ProductStatus status
+        ProductStatus status,
+        String imageURL
 ) {
 }

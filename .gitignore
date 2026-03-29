@@ -32,6 +32,8 @@ build/
 ### VS Code ###
 .vscode/
 
-!src/main/resources/application.example.properties
-
+# Ignore the file with real passwords
 src/main/resources/application.properties
+
+# Explicitly DO NOT ignore the example template
+!src/main/resources/application.example.properties

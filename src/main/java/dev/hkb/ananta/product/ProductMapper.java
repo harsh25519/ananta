@@ -5,6 +5,7 @@ import dev.hkb.ananta.product.dto.ProductResponse;
 import dev.hkb.ananta.tag.Tag;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -22,6 +23,7 @@ public interface ProductMapper {
     @Mapping(target = "categoryName", expression = "java(product.getCategory().getName())")
     @Mapping(target = "manufacturerName", expression = "java(product.getManufacturer().getBrandName())")
     @Mapping(source = "tagSet", target = "tagNames")
+    @Mapping(target = "imageURL", expression = "java(getImageUrl(product))")
     ProductResponse toDto(Product product);
 
     // for tagNames field to map tagset<TAG> to set<String>
@@ -32,5 +34,31 @@ public interface ProductMapper {
         return tagSet.stream()
                 .map(Tag::getTag)
                 .collect(Collectors.toSet());
+    }
+
+//    default String getEncodingImage(Product product){
+//        if(product != null &&
+//                product.getProductImage() != null){
+//            return product.getProductImage().base64Img();
+//        }
+//        return null;
+//    }
+//
+//    default String getImageType(Product product){
+//        if(product != null &&
+//                product.getProductImage() != null){
+//            return product.getProductImage().imageType();
+//        }
+//        return null;
+//    }
+
+    default String getImageUrl(Product product){
+
+        String imgUrl = ServletUriComponentsBuilder.fromCurrentContextPath()
+                .path("/products/")
+                .path(product.getId().toString())
+                .path("/images")
+                .toUriString();
+        return imgUrl;
     }
 }

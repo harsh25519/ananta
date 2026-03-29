@@ -4,6 +4,7 @@ import dev.hkb.ananta.category.Category;
 import dev.hkb.ananta.category.CategoryRepository;
 import dev.hkb.ananta.constants.ProductStatus;
 import dev.hkb.ananta.constants.StatusEnum;
+import dev.hkb.ananta.image.ImageRepository;
 import dev.hkb.ananta.manufacturer.Manufacturer;
 import dev.hkb.ananta.manufacturer.ManufacturerRepository;
 import dev.hkb.ananta.product.dto.CreateProductRequest;
@@ -42,13 +43,14 @@ public class ProductServiceImpl implements ProductService{
     private final SellerRepository sellerRepository;
     private final UserRepository userRepository;
     private final SellerProductMapper sellerProductMapper;
+    private final ImageRepository imageRepository;
 
     @Autowired
     public ProductServiceImpl(ProductRepository productRepository, ProductMapper productMapper,
                               ManufacturerRepository manufacturerRepository, CategoryRepository categoryRepository,
                               TagRepository tagRepository, SellerProductRepository sellerProductRepository,
                               SellerRepository sellerRepository, UserRepository userRepository,
-                              SellerProductMapper sellerProductMapper) {
+                              SellerProductMapper sellerProductMapper, ImageRepository imageRepository) {
         this.productRepository = productRepository;
         this.productMapper = productMapper;
         this.manufacturerRepository = manufacturerRepository;
@@ -58,6 +60,7 @@ public class ProductServiceImpl implements ProductService{
         this.sellerRepository = sellerRepository;
         this.userRepository = userRepository;
         this.sellerProductMapper = sellerProductMapper;
+        this.imageRepository = imageRepository;
     }
 
     @Transactional
@@ -92,7 +95,7 @@ public class ProductServiceImpl implements ProductService{
 
         List<Product> product;
 
-        // to find by filter or category and tags to apply for sell
+        // to find by filter or category and tags to apply for sale
         if(category == null && (tag == null || tag.isEmpty())){
             product = productRepository.findAll();
         }else{
@@ -168,6 +171,7 @@ public class ProductServiceImpl implements ProductService{
             return "Application Rejected";
         }
     }
+
 
     // function to get tag set using tag ids
     private Set<Tag> findTagById(Set<Long> tagIds){

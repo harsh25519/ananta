@@ -14,6 +14,7 @@ public record SellerProductFullResponse(
         Long ratings,
         BigDecimal price,
         int quantity,
-        ProductStatus status
+        ProductStatus status,
+        String imageURL
 ) {
 }

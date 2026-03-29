@@ -14,6 +14,7 @@ public record ProductResponse(Long Id,
                               String manufacturerName,
                               ProductStatus status,
                               Set<String> tagNames,
+                              String imageURL,
                               OffsetDateTime createdAt
                               ) {
 }

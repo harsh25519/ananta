@@ -1,8 +1,9 @@
 package dev.hkb.ananta.product;
 
-import dev.hkb.ananta.constants.ProductStatus;
-import dev.hkb.ananta.manufacturer.Manufacturer;
 import dev.hkb.ananta.category.Category;
+import dev.hkb.ananta.constants.ProductStatus;
+import dev.hkb.ananta.image.Image;
+import dev.hkb.ananta.manufacturer.Manufacturer;
 import dev.hkb.ananta.tag.Tag;
 import jakarta.persistence.*;
 import org.hibernate.annotations.CreationTimestamp;
@@ -56,6 +57,11 @@ public class Product {
             inverseJoinColumns = @JoinColumn(name = "tag_id")
     )
     private Set<Tag> tagSet = new HashSet<>();
+
+    @OneToOne(mappedBy = "product", fetch = FetchType.LAZY,
+            cascade = CascadeType.ALL, orphanRemoval = true
+    )
+    private Image productImage;
 
     //Constructors
     public Product() {
@@ -141,5 +147,16 @@ public class Product {
 
     public void setTagSet(Set<Tag> tagSet) {
         this.tagSet = tagSet;
+    }
+
+    public Image getProductImage() {
+        if(productImage != null){
+            return productImage;
+        }
+        return null;
+    }
+
+    public void setProductImage(Image productImage) {
+        this.productImage = productImage;
     }
 }

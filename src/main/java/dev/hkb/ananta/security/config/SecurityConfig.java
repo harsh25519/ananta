@@ -56,11 +56,14 @@ public class SecurityConfig{
                                 .requestMatchers(HttpMethod.DELETE, "/tags/**").hasRole("ADMIN")
 
                                 // ---Product Management---
+                                .requestMatchers(HttpMethod.GET,"/products/{id}/images").permitAll()
                                 .requestMatchers(HttpMethod.POST,"/products").hasRole("ADMIN")
                                 .requestMatchers(HttpMethod.GET,"/products").hasAnyRole("ADMIN","SELLER","MANUFACTURER")
                                 .requestMatchers(HttpMethod.POST, "/products/applications").hasRole("SELLER")
                                 .requestMatchers("/products/pending").hasRole("ADMIN")
-                                .requestMatchers(HttpMethod.POST,"/products/approve/*").hasRole("ADMIN")
+                                .requestMatchers(HttpMethod.POST,"/products/approve/*","/products/*/images").hasRole("ADMIN")
+                                .requestMatchers(HttpMethod.DELETE,"/products/{id}/images").hasAnyRole("ADMIN","MANUFACTURER")
+
 
                                 // ---Review Management---
                                 .requestMatchers(HttpMethod.GET,"/products/*/reviews").permitAll()

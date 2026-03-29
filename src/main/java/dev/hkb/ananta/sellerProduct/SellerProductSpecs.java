@@ -1,6 +1,7 @@
 package dev.hkb.ananta.sellerProduct;
 
 import dev.hkb.ananta.constants.ProductStatus;
+import jakarta.persistence.criteria.Expression;
 import jakarta.persistence.criteria.JoinType;
 import org.springframework.data.jpa.domain.Specification;
 
@@ -13,10 +14,13 @@ public class SellerProductSpecs {
     public static Specification<SellerProduct> hasFuzzyName(String name) {
         return (root, query, cb) -> {
             if (name == null || name.isBlank()) return null;
-            return cb.greaterThan(
-                    cb.function("similarity", Double.class, root.get("product").get("name"), cb.literal(name)),
-                    0.3
-            );
+
+            Expression<Double> similarity = cb.function("similarity", Double.class, root.get("product").get("name"),
+                    cb.literal(name));
+
+            query.orderBy(cb.desc(similarity));
+
+            return cb.greaterThan(similarity, 0.1);
         };
     }
 
