@@ -2,6 +2,8 @@ package dev.hkb.ananta.sellerProduct;
 
 import dev.hkb.ananta.constants.ProductStatus;
 import dev.hkb.ananta.constants.UserRoles;
+import dev.hkb.ananta.order.OrderItem;
+import dev.hkb.ananta.order.Orders;
 import dev.hkb.ananta.review.ReviewRepository;
 import dev.hkb.ananta.seller.Seller;
 import dev.hkb.ananta.seller.SellerRepository;
@@ -153,6 +155,22 @@ public class SellerProductServiceImpl implements SellerProductService{
         sellerProduct.setProductStatus(ProductStatus.DISCONTINUED);
 
         sellerProductRepository.save(sellerProduct);
+    }
+
+    @Transactional
+    @Override
+    public void decreaseInventory(Orders order) {
+        for (OrderItem item : order.getOrderItemList()) {
+            SellerProduct product = item.getSellerProduct();
+            int quantityOrdered = item.getQuantity();
+
+            if (product.getQuantity() < quantityOrdered) {
+                throw new RuntimeException("Low stock for product: " + product.getProduct().getName());
+            }
+
+            product.setQuantity(product.getQuantity() - quantityOrdered);
+            sellerProductRepository.save(product);
+        }
     }
 
 }

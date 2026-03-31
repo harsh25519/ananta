@@ -1,5 +1,6 @@
 package dev.hkb.ananta.sellerProduct;
 
+import dev.hkb.ananta.order.Orders;
 import dev.hkb.ananta.sellerProduct.dto.SellerProductBaseResponse;
 import dev.hkb.ananta.sellerProduct.dto.SellerProductFullResponse;
 import dev.hkb.ananta.sellerProduct.dto.UpdateSellerProductRequest;
@@ -18,4 +19,6 @@ public interface SellerProductService {
     SellerProductFullResponse showSellerProduct(Long sellerProductId, String email);
 
     void deleteProduct(Long sellerProductId, String email);
+
+    void decreaseInventory(Orders order);
 }
