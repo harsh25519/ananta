@@ -9,6 +9,7 @@ import org.hibernate.annotations.CreationTimestamp;
 
 import java.math.BigDecimal;
 import java.time.OffsetDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -20,15 +21,21 @@ public class Orders {
     @Column(name = "id")
     private Long id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY,
+            cascade = {CascadeType.DETACH, CascadeType.REFRESH, CascadeType.PERSIST, CascadeType.MERGE}
+    )
     @JoinColumn(name = "customer_id", nullable = false)
     private Users user;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY,
+            cascade = {CascadeType.DETACH, CascadeType.REFRESH, CascadeType.PERSIST, CascadeType.MERGE}
+    )
     @JoinColumn(name = "billing_address_id", nullable = false)
     private Address billingAddress;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY,
+            cascade = {CascadeType.DETACH, CascadeType.REFRESH, CascadeType.PERSIST, CascadeType.MERGE}
+    )
     @JoinColumn(name = "shipping_address_id", nullable = false)
     private Address shippingAddress;
 
@@ -36,11 +43,11 @@ public class Orders {
     private BigDecimal totalPrice;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "currency", precision = 12, scale = 2, nullable = false)
+    @Column(name = "currency", nullable = false, length = 3)
     private CurrencyEnum currency = CurrencyEnum.INR;
 
     @CreationTimestamp
-    @Column(name = "created_at", updatable = false, insertable = false)
+    @Column(name = "created_at", updatable = false)
     private OffsetDateTime createdAt;
 
 //    status (CREATED, PAYMENT_PENDING, PAID, CANCELLED)
@@ -49,8 +56,9 @@ public class Orders {
     @Column(name = "order_status")
     private OrderStatus orderStatus;
 
-    @OneToMany(mappedBy = "order")
-    private List<OrderItem> orderItemList;
+    @OneToMany(mappedBy = "order", fetch = FetchType.LAZY,
+            cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<OrderItem> orderItemList = new ArrayList<>();
 
     //Constructors
     public Orders() {

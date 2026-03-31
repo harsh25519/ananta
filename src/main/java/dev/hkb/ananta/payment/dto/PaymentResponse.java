@@ -11,6 +11,7 @@ public record PaymentResponse(
         Long paymentId,
         Long orderId,
         PaymentMethod paymentMethod,
+        String gatewayReferenceId,
         String gatewayTransactionId,
         BigDecimal amount,
         CurrencyEnum currency,

@@ -6,6 +6,7 @@ import dev.hkb.ananta.order.dto.OrderItemResponse;
 import dev.hkb.ananta.order.dto.OrderResponse;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.util.List;
 
@@ -18,6 +19,7 @@ public interface OrderMapper {
     @Mapping(source = "orderItem.sellerProduct.id", target = "productId")
     @Mapping(source = "orderItem.sellerProduct.product.name", target = "productName")
     @Mapping(target = "totalPrice", expression = "java(orderItem.getTotalPrice())")
+    @Mapping(target = "imageUrl", expression = "java(getImageUrl(orderItem))")
     OrderItemResponse toOrderItemDto(OrderItem orderItem);
 
     Orders toOrderEntity(CreateOrderRequest request);
@@ -33,6 +35,16 @@ public interface OrderMapper {
         return orderItemList.stream()
                 .map(this::toOrderItemDto)
                 .toList();
+    }
+
+    default String getImageUrl(OrderItem orderItem){
+
+        String imgUrl = ServletUriComponentsBuilder.fromCurrentContextPath()
+                .path("/products/")
+                .path(orderItem.getSellerProduct().getProduct().getId().toString())
+                .path("/images")
+                .toUriString();
+        return imgUrl;
     }
 
 }

@@ -80,6 +80,12 @@ public class SecurityConfig{
                                 // ---Cart Management---
                                 .requestMatchers("/cart/**").hasRole("CUSTOMER")
 
+                                // ---Order Mangement---
+                                .requestMatchers("/orders/**").hasRole("CUSTOMER")
+
+                                // ---Payment Management---
+                                .requestMatchers("/payments/callback").permitAll()
+                                .requestMatchers("/payments/**").hasRole("CUSTOMER")
 
                                 .anyRequest().authenticated()
         )

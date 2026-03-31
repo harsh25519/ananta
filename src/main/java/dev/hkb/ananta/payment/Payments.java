@@ -31,11 +31,16 @@ public class Payments {
     @Column(name = "currency", nullable = false)
     private CurrencyEnum currency = CurrencyEnum.INR;
 
+    /// suppose it for now
     @Enumerated(EnumType.STRING)
-    @Column(name = "payment_method", nullable = false)
-    private PaymentMethod paymentMethod;
+    @Column(name = "payment_methods", nullable = false)
+    private PaymentMethod paymentMethod = PaymentMethod.DEBIT_CARD;
 
-    @Column(name = "transaction_id", unique = true)
+    /// for plink id
+    @Column(name = "gateway_ref_id", unique = true)
+    private String gatewayReferenceId;
+
+    @Column(name = "transaction_id", unique = true, nullable = true)
     private String gatewayTransactionId;
 
     @Enumerated(EnumType.STRING)
@@ -43,17 +48,18 @@ public class Payments {
     private PaymentStatus paymentStatus;
 
     @CreationTimestamp
-    @Column(name = "created_at", updatable = false, insertable = false)
+    @Column(name = "created_at", updatable = false)
     private OffsetDateTime createdAt;
 
     //Constructors
     public Payments() {
     }
 
-    public Payments(Orders order, BigDecimal amount, PaymentMethod paymentMethod, String gatewayTransactionId, PaymentStatus paymentStatus, OffsetDateTime createdAt) {
+    public Payments(Orders order, BigDecimal amount, PaymentMethod paymentMethod,  String gatewayReferenceId, String gatewayTransactionId, PaymentStatus paymentStatus, OffsetDateTime createdAt) {
         this.order = order;
         this.amount = amount;
         this.paymentMethod = paymentMethod;
+        this.gatewayReferenceId = gatewayReferenceId;
         this.gatewayTransactionId = gatewayTransactionId;
         this.paymentStatus = paymentStatus;
         this.createdAt = createdAt;
@@ -115,5 +121,21 @@ public class Payments {
 
     public void setCreatedAt(OffsetDateTime createdAt) {
         this.createdAt = createdAt;
+    }
+
+    public CurrencyEnum getCurrency() {
+        return currency;
+    }
+
+    public void setCurrency(CurrencyEnum currency) {
+        this.currency = currency;
+    }
+
+    public String getGatewayReferenceId() {
+        return gatewayReferenceId;
+    }
+
+    public void setGatewayReferenceId(String gatewayReferenceId) {
+        this.gatewayReferenceId = gatewayReferenceId;
     }
 }
