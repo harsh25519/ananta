@@ -28,7 +28,7 @@ public class SellerServiceImpl implements SellerService{
     @Override
     public SellerResponse applyForSeller(CreateSellerRequest sellerDto, String email) {
         Users ur = userRepository.findByEmail(email)
-//                .orElseThrow(() -> new UserNotFoundException("Authenticated user does not exists in database"));
+//                .orElseThrow(() -> new UserNotFound("Authenticated user does not exists in database"));
                 .orElseThrow(() -> new RuntimeException("Authenticated user does not exists in database"));
 
         if(sellerRepository.existsByUser(ur) || ur.getRole().equals(UserRoles.SELLER)){

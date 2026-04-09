@@ -3,11 +3,12 @@ package dev.hkb.ananta.user;
 import dev.hkb.ananta.address.AddressRepository;
 import dev.hkb.ananta.cart.CartRepository;
 import dev.hkb.ananta.constants.UserRoles;
+import dev.hkb.ananta.exceptionHandler.UserNotFound;
+import dev.hkb.ananta.security.jwt.JwtUtilService;
 import dev.hkb.ananta.security.utils.EmailService;
 import dev.hkb.ananta.user.dto.CreateUserRequest;
 import dev.hkb.ananta.user.dto.LoginDTO;
 import dev.hkb.ananta.user.dto.UserResponse;
-import dev.hkb.ananta.security.jwt.JwtUtilService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -34,7 +35,8 @@ public class UserServiceImpl implements UserService {
     @Autowired
     public UserServiceImpl(UserRepository userRepo, PasswordEncoder passwordEncoder,
                            JwtUtilService jwtUtilService, AuthenticationManager authenticationManager,
-                           UserMapper userMapper, AddressRepository addressRepository, CartRepository cartRepository, EmailService emailService) {
+                           UserMapper userMapper, AddressRepository addressRepository, CartRepository cartRepository,
+                           EmailService emailService) {
         this.userRepo = userRepo;
         this.passwordEncoder  = passwordEncoder;
         this.jwtUtilService = jwtUtilService;
@@ -49,7 +51,7 @@ public class UserServiceImpl implements UserService {
     public UserResponse getCurrentUser(String email) {
         return userRepo.findByEmail(email)
                 .map(userMapper::toDto)
-                .orElseThrow(() -> new IllegalStateException("Authenticated user not found in database"));
+                .orElseThrow(() -> new UserNotFound("Authenticated user not found in database"));
     }
 
     @Override
@@ -63,10 +65,15 @@ public class UserServiceImpl implements UserService {
         );
 
         SecurityContextHolder.getContext().setAuthentication(authentication);
+
+        String token = jwtUtilService.generateToken(loginDTO.email());
+        return token;
+
+        /// Authentication will automatically send http request unauthorized if not found
 //        Optional<Users> user = userRepo.findByEmail(loginDTO.email());
 //
 //        if(user.isEmpty()){
-//            throw new UserNotFoundException("User does not exist with this email.");
+//            throw new UserNotFound("User does not exist with this email.");
 //        }
 //
 //        Users ur = user.get();
@@ -74,8 +81,7 @@ public class UserServiceImpl implements UserService {
 //            throw new UserNotAuthenticated("Password is incorrect. Please! try again.");
 //        }
 
-        String token = jwtUtilService.generateToken(loginDTO.email());
-        return token;
+
     }
 
 
@@ -111,7 +117,7 @@ public class UserServiceImpl implements UserService {
     public void deleteCurrentUser(String email) {
         Users user = userRepo.findByEmail(email)
                 .orElseThrow(() ->
-                        new IllegalStateException("Authenticated user not found in database"));
+                        new UserNotFound("Authenticated user not found in database"));
 
         // orphan removal of address and cart
         addressRepository.deleteByUser_Id(user.getId());

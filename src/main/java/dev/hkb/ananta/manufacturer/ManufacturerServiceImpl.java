@@ -1,6 +1,7 @@
 package dev.hkb.ananta.manufacturer;
 
 import dev.hkb.ananta.constants.StatusEnum;
+import dev.hkb.ananta.exceptionHandler.ManufacturerNotFound;
 import dev.hkb.ananta.manufacturer.dto.CreateManufacturerRequest;
 import dev.hkb.ananta.manufacturer.dto.ManufacturerResponse;
 import dev.hkb.ananta.product.ProductMapper;
@@ -33,8 +34,8 @@ public class ManufacturerServiceImpl implements ManufacturerService{
     public ManufacturerResponse addManufacturer(CreateManufacturerRequest cmr) {
         Manufacturer manufacturer = manufacturerMapper.toEntity(cmr);
 
-        manufacturerRepository.save(manufacturer);
-        return manufacturerMapper.toDto(manufacturer);
+        Manufacturer savedManufacturer = manufacturerRepository.save(manufacturer);
+        return manufacturerMapper.toDto(savedManufacturer);
     }
 
     @Override
@@ -49,7 +50,7 @@ public class ManufacturerServiceImpl implements ManufacturerService{
     @Override
     public List<ProductResponse> getProducts(String brandName) {
         Manufacturer manufacturer = manufacturerRepository.getManufacturerByBrandName(brandName)
-                .orElseThrow(() -> new RuntimeException("Manufacturer Not Found"));
+                .orElseThrow(() -> new ManufacturerNotFound("Manufacturer Not Found"));
 
         return productRepository.findAllByManufacturerId(manufacturer.getId())
                 .stream()
@@ -62,7 +63,7 @@ public class ManufacturerServiceImpl implements ManufacturerService{
     @Override
     public void deleteManufacturer(Long manufacturerId) {
         Manufacturer manufacturer = manufacturerRepository.findById(manufacturerId)
-                .orElseThrow(() -> new RuntimeException("Manufacturer not found"));
+                .orElseThrow(() -> new ManufacturerNotFound("Manufacturer not found"));
         manufacturer.setStatus(StatusEnum.INACTIVE);
         manufacturerRepository.save(manufacturer);
     }

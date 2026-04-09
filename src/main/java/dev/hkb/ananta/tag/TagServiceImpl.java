@@ -1,6 +1,7 @@
 package dev.hkb.ananta.tag;
 
 
+import dev.hkb.ananta.exceptionHandler.TagNotFound;
 import dev.hkb.ananta.product.Product;
 import dev.hkb.ananta.product.ProductRepository;
 import dev.hkb.ananta.tag.dto.CreateTagRequest;
@@ -45,7 +46,7 @@ public class TagServiceImpl implements TagService{
     @Override
     public void deleteTag(Long tagId) {
         Tag tag = tagRepository.findById(tagId)
-                .orElseThrow(() -> new RuntimeException("Tag does not exist"));
+                .orElseThrow(() -> new TagNotFound("Tag not found"));
 
         List<Product> products = productRepository.findAllByTagSet_Id(tagId);
 

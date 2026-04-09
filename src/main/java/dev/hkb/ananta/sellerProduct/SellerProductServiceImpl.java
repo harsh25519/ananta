@@ -2,6 +2,10 @@ package dev.hkb.ananta.sellerProduct;
 
 import dev.hkb.ananta.constants.ProductStatus;
 import dev.hkb.ananta.constants.UserRoles;
+import dev.hkb.ananta.exceptionHandler.InsufficientStock;
+import dev.hkb.ananta.exceptionHandler.SellerProductNotFound;
+import dev.hkb.ananta.exceptionHandler.UserNotAuthorized;
+import dev.hkb.ananta.exceptionHandler.UserNotFound;
 import dev.hkb.ananta.order.OrderItem;
 import dev.hkb.ananta.order.Orders;
 import dev.hkb.ananta.review.ReviewRepository;
@@ -115,7 +119,7 @@ public class SellerProductServiceImpl implements SellerProductService{
     public SellerProductFullResponse showSellerProduct(Long sellerProductId, String email) {
 
         Users user = userRepository.findByEmail(email)
-                .orElseThrow(() -> new RuntimeException("User not found"));
+                .orElseThrow(() -> new UserNotFound("User not found"));
 
         Specification<SellerProduct> spec = Specification.where(SellerProductSpecs.hasSellerProductId(sellerProductId))
                 .and(SellerProductSpecs.fetchProductAndSeller());
@@ -127,8 +131,9 @@ public class SellerProductServiceImpl implements SellerProductService{
         // provide review and ratings
         Specification<SellerProduct> spec2 = Specification.where(SellerProductSpecs.hasSellerProductId(sellerProductId));
 
+        // seller product Id
         Long productId = sellerProductRepository.findOne(spec2)
-                .orElseThrow(() -> new RuntimeException("Product does not exist"))
+                .orElseThrow(() -> new SellerProductNotFound("Seller Product does not exist"))
                 .getProduct()
                 .getId();
 
@@ -137,7 +142,7 @@ public class SellerProductServiceImpl implements SellerProductService{
 
         return sellerProductRepository.findOne(spec)
                 .map(x -> sellerProductMapper.toFullDto(x, avgRating, totalRatings))
-                .orElseThrow(() -> new RuntimeException("Product not found or currently unavailable"));
+                .orElseThrow(() -> new SellerProductNotFound("Product not found or currently unavailable"));
 
     }
 
@@ -146,10 +151,10 @@ public class SellerProductServiceImpl implements SellerProductService{
     public void deleteProduct(Long sellerProductId, String email) {
 
         SellerProduct sellerProduct = sellerProductRepository.findById(sellerProductId)
-                .orElseThrow(() -> new RuntimeException("Seller product does not exist"));
+                .orElseThrow(() -> new SellerProductNotFound("Seller product not found"));
 
         if(!sellerProduct.getSeller().getUser().getEmail().equals(email)){
-            throw new RuntimeException("User is not authorized");
+            throw new UserNotAuthorized("User is not authorized");
         }
 
         sellerProduct.setProductStatus(ProductStatus.DISCONTINUED);
@@ -165,7 +170,7 @@ public class SellerProductServiceImpl implements SellerProductService{
             int quantityOrdered = item.getQuantity();
 
             if (product.getQuantity() < quantityOrdered) {
-                throw new RuntimeException("Low stock for product: " + product.getProduct().getName());
+                throw new InsufficientStock("Low stock for product: " + product.getProduct().getName());
             }
 
             product.setQuantity(product.getQuantity() - quantityOrdered);
