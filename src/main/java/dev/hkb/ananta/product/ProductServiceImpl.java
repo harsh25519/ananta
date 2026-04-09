@@ -4,6 +4,7 @@ import dev.hkb.ananta.category.Category;
 import dev.hkb.ananta.category.CategoryRepository;
 import dev.hkb.ananta.constants.ProductStatus;
 import dev.hkb.ananta.constants.StatusEnum;
+import dev.hkb.ananta.exceptionHandler.*;
 import dev.hkb.ananta.image.ImageRepository;
 import dev.hkb.ananta.manufacturer.Manufacturer;
 import dev.hkb.ananta.manufacturer.ManufacturerRepository;
@@ -70,13 +71,13 @@ public class ProductServiceImpl implements ProductService{
 
         // resolving fields that we intentionally ignored at mapper
         Manufacturer manufacturer = manufacturerRepository.findById(cpr.manufacturerId())
-                .orElseThrow(() -> new RuntimeException("Manufacturer does not exist"));
+                .orElseThrow(() -> new ManufacturerNotFound("Manufacturer does not exist"));
         if(manufacturer.getStatus().equals(StatusEnum.INACTIVE)){
-            throw new RuntimeException("Manufacturer has become inactive.");
+            throw new ManufacturerNotFound("Manufacturer has become inactive.");
         }
 
         Category category = categoryRepository.findById(cpr.categoryId())
-                .orElseThrow(() -> new RuntimeException("Category does not exist"));
+                .orElseThrow(() -> new CategoryNotFound("Category does not exist"));
 
         Set<Tag> tags = findTagById(cpr.tagIds());
 
@@ -111,23 +112,23 @@ public class ProductServiceImpl implements ProductService{
     @Override
     public void sellerApplyToProduct(CreateSellerProductRequest request, String sellerMail) {
         Users user = userRepository.findByEmail(sellerMail)
-                .orElseThrow(()->new RuntimeException("No such user exists"));
+                .orElseThrow(()->new UserDoesNotExist("No such user exists"));
 
         Seller seller = sellerRepository.findById(user.getId())
-                .orElseThrow(() -> new RuntimeException("Seller profile not found for: " + sellerMail));
+                .orElseThrow(() -> new SellerNotFound("Seller profile not found for: " + sellerMail));
 
         Optional<SellerProduct> existing = sellerProductRepository.findByProductIdAndSellerId(request.productId(), seller.getId());
 
         SellerProduct listing;
         Product masterProduct = productRepository.findById(request.productId())
-                .orElseThrow(() -> new RuntimeException("Product not found"));
+                .orElseThrow(() -> new ProductNotFound("Product not found"));
 
         if (existing.isPresent()) {
             listing = existing.get();
 
             int qty = listing.getQuantity() + request.quantity();
             if(qty > MAX_STOCK){
-                throw new RuntimeException("Quantity should be less than max manufacturing limit");
+                throw new InsufficientStock("Quantity should be less than max manufacturing limit");
             }
 
             listing.setQuantity(qty);
@@ -156,7 +157,7 @@ public class ProductServiceImpl implements ProductService{
     @Override
     public String approveListing(Long sellerProductId, boolean approved) {
         SellerProduct sellerProduct = sellerProductRepository.findById(sellerProductId)
-                .orElseThrow(() -> new RuntimeException("Seller Product does not exist"));
+                .orElseThrow(() -> new SellerProductNotFound("Seller Product does not exist"));
 
         if(approved){
             sellerProduct.setProductStatus(ProductStatus.ACTIVE);
@@ -178,7 +179,7 @@ public class ProductServiceImpl implements ProductService{
         Set<Tag> tags= new HashSet<>();
         for(Long id : tagIds){
             Tag tag = tagRepository.findById(id)
-                    .orElseThrow(() -> new RuntimeException("Tag does not exist"));
+                    .orElseThrow(() -> new TagNotFound("Tag does not exist"));
             tags.add(tag);
         }
         return tags;

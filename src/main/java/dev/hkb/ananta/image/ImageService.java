@@ -1,5 +1,7 @@
 package dev.hkb.ananta.image;
 
+import dev.hkb.ananta.exceptionHandler.ImageNotFound;
+import dev.hkb.ananta.exceptionHandler.ProductNotFound;
 import dev.hkb.ananta.product.Product;
 import dev.hkb.ananta.product.ProductRepository;
 import org.springframework.stereotype.Service;
@@ -26,7 +28,7 @@ public class ImageService {
             Image image = new Image();
 
             Product product = productRepository.findById(id)
-                            .orElseThrow(() -> new RuntimeException("Product does not exist"));
+                            .orElseThrow(() -> new ProductNotFound("Product does not exist"));
             image.setImageName(imageFile.getOriginalFilename());
             image.setImageType(imageFile.getContentType());
             image.setImage(imageFile.getBytes());
@@ -50,7 +52,7 @@ public class ImageService {
     @Transactional
     public void removeImage(Long productId){
         Image img = imageRepository.findByProduct_Id(productId)
-                .orElseThrow(() -> new RuntimeException("Image does not exist"));
+                .orElseThrow(() -> new ImageNotFound("Image does not exist"));
 
         Product product = img.getProduct();
 

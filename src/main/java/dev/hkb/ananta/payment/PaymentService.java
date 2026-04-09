@@ -4,6 +4,9 @@ import com.razorpay.RazorpayException;
 import dev.hkb.ananta.cart.CartService;
 import dev.hkb.ananta.constants.OrderStatus;
 import dev.hkb.ananta.constants.PaymentStatus;
+import dev.hkb.ananta.exceptionHandler.InsufficientStock;
+import dev.hkb.ananta.exceptionHandler.OrderNotFound;
+import dev.hkb.ananta.exceptionHandler.PaymentNotFound;
 import dev.hkb.ananta.order.OrderItem;
 import dev.hkb.ananta.order.OrderRepository;
 import dev.hkb.ananta.order.Orders;
@@ -34,7 +37,7 @@ public class PaymentService {
 
     public String processPayment(String username, Long orderId) {
         Orders order = orderRepository.findById(orderId)
-                .orElseThrow(() -> new RuntimeException("Order not found."));
+                .orElseThrow(() -> new OrderNotFound("Order not found."));
 
         if (order.getOrderStatus() == OrderStatus.PAID) {
             throw new RuntimeException("This order is already paid for!");
@@ -49,7 +52,7 @@ public class PaymentService {
         try {
             for(OrderItem oi : order.getOrderItemList()){
                 if(oi.getSellerProduct().getQuantity() < oi.getQuantity()){
-                    throw new RuntimeException("Stock is than required.");
+                    throw new InsufficientStock("Stock is less than required.");
                 }
             }
             return razorpayService.createPaymentLink(order);
@@ -63,7 +66,7 @@ public class PaymentService {
     public PaymentResponse checkCallback(String status, String paymentId, String plinkId) {
 
         Payments paymentRecord = paymentRepository.findByGatewayReferenceId(plinkId)
-                .orElseThrow(() -> new RuntimeException("Payment record not found for link: " + plinkId));
+                .orElseThrow(() -> new PaymentNotFound("Payment record not found for link: " + plinkId));
 
         if ("paid".equals(status)) {
             // 2. Update Payment Record

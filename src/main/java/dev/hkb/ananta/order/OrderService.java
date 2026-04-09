@@ -7,6 +7,7 @@ import dev.hkb.ananta.cart.CartItem;
 import dev.hkb.ananta.cart.CartRepository;
 import dev.hkb.ananta.constants.OrderStatus;
 import dev.hkb.ananta.constants.UserRoles;
+import dev.hkb.ananta.exceptionHandler.*;
 import dev.hkb.ananta.order.dto.CreateOrderRequest;
 import dev.hkb.ananta.order.dto.OrderResponse;
 import dev.hkb.ananta.user.UserRepository;
@@ -41,7 +42,7 @@ public class OrderService {
     @Transactional(readOnly = true)
     public List<OrderResponse> getOrders(String username) {
         Users user = userRepository.findByEmail(username)
-                .orElseThrow(() -> new RuntimeException("User Not found"));
+                .orElseThrow(() -> new UserNotFound("User Not found"));
 
         /// Move to security layer
         if(!user.getRole().equals(UserRoles.CUSTOMER)){
@@ -58,21 +59,21 @@ public class OrderService {
     @Transactional
     public OrderResponse computeOrder(String username, CreateOrderRequest request) {
         Users user = userRepository.findByEmail(username)
-                .orElseThrow(() -> new RuntimeException("User Not found"));
+                .orElseThrow(() -> new UserNotFound("User Not found"));
         Cart cart = cartRepository.findByUserEmail(username)
-                .orElseThrow(() -> new RuntimeException("Cart not found"));
+                .orElseThrow(() -> new CartNotFound("Cart not found"));
 
         for(CartItem ci : cart.getCartItems()){
             if(ci.getSellerProduct().getQuantity() <= ci.getQuantity()){
-                throw new RuntimeException("Insufficient stock for product: " + ci.getSellerProduct().getProduct().getName()
+                throw new InsufficientStock("Insufficient stock for product: " + ci.getSellerProduct().getProduct().getName()
                         + ". Available: " + ci.getSellerProduct().getQuantity());
             }
         }
 
         Address billingAddress = addressRepository.findById(request.billingAddressId())
-                .orElseThrow(() -> new RuntimeException("Address could not be found"));
+                .orElseThrow(() -> new AddressNotFound("Address could not be found"));
         Address shippingAddress = addressRepository.findById(request.shippingAddressId())
-                .orElseThrow(() -> new RuntimeException("Address could not be found"));
+                .orElseThrow(() -> new AddressNotFound("Address could not be found"));
 
         Orders order = cartToOrderMapper.cartToOrder(cart, billingAddress, shippingAddress);
         order.setOrderStatus(OrderStatus.PENDING);
@@ -86,10 +87,10 @@ public class OrderService {
     @Transactional
     public OrderResponse cancelOrder(String username, Long orderId){
         Users user = userRepository.findByEmail(username)
-                .orElseThrow(() -> new RuntimeException("User Not found"));
+                .orElseThrow(() -> new UserNotFound("User Not found"));
 
         Orders order = orderRepository.findById(orderId)
-                .orElseThrow(() -> new RuntimeException("Order can't be found"));
+                .orElseThrow(() -> new OrderNotFound("Order can't be found"));
         if (order.getOrderStatus() == OrderStatus.SHIPPED || order.getOrderStatus() == OrderStatus.DELIVERED) {
             throw new RuntimeException("Order cannot be cancelled once it has been shipped.");
         }
@@ -104,7 +105,7 @@ public class OrderService {
         }
 
         if(!order.getUser().getEmail().equals(username)){
-            throw new RuntimeException("This user is not authorized.");
+            throw new UserNotAuthorized("This user is not authorized.");
         }
 
         order.setOrderStatus(OrderStatus.CANCELED);

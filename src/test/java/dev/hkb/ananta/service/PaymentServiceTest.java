@@ -39,6 +39,5 @@ public class PaymentServiceTest {
         mockOrder.setUser(mockUser);
 
         when(orderRepository.findById(any())).thenReturn(Optional.of(mockOrder));
-
     }
 }

@@ -2,6 +2,7 @@ package dev.hkb.ananta.cart;
 
 import dev.hkb.ananta.cart.dto.CartResponse;
 import dev.hkb.ananta.cart.dto.CreateCartItemRequest;
+import dev.hkb.ananta.exceptionHandler.*;
 import dev.hkb.ananta.sellerProduct.SellerProduct;
 import dev.hkb.ananta.sellerProduct.SellerProductRepository;
 import dev.hkb.ananta.user.UserRepository;
@@ -39,7 +40,7 @@ public class CartServiceImpl implements CartService{
                 .orElseGet(() -> {
                     Cart newCart = new Cart();
                     Users user = userRepository.findByEmail(email)
-                            .orElseThrow(() -> new RuntimeException("User not found"));
+                            .orElseThrow(() -> new UserNotFound("User not found"));
                     newCart.setUser(user);
                     cartRepository.save(newCart);
                     return newCart;
@@ -55,16 +56,16 @@ public class CartServiceImpl implements CartService{
         Cart cart = cartRepository.findByUserEmail(username)
                 .orElseGet(() ->{
                     Users user = userRepository.findByEmail(username)
-                            .orElseThrow(() -> new RuntimeException("User not found"));
+                            .orElseThrow(() -> new UserNotFound("User not found"));
                     Cart newCart = new Cart();
                     newCart.setUser(user);
                     return cartRepository.save(newCart);
                 });
         SellerProduct sellerProduct = sellerProductRepository.findById(request.productId())
-                .orElseThrow(() -> new RuntimeException("Seller Product not found"));
+                .orElseThrow(() -> new SellerProductNotFound("Seller Product not found"));
 
         if (sellerProduct.getQuantity() < request.quantity()) {
-            throw new RuntimeException("Only " + sellerProduct.getQuantity() + " units available");
+            throw new InsufficientStock("Only " + sellerProduct.getQuantity() + " units available");
         }
 
         Optional<CartItem> existing = cartItemRepository.findByCartAndSellerProduct(cart, sellerProduct);
@@ -73,7 +74,7 @@ public class CartServiceImpl implements CartService{
         if(existing.isPresent()){
             cartItem = existing.get();
             if (sellerProduct.getQuantity() < cartItem.getQuantity() + request.quantity()) {
-                throw new RuntimeException("Only " + sellerProduct.getQuantity() + " units available");
+                throw new InsufficientStock("Only " + sellerProduct.getQuantity() + " units available");
             }
             cartItem.setQuantity(cartItem.getQuantity() + request.quantity());
         }else{
@@ -90,14 +91,14 @@ public class CartServiceImpl implements CartService{
     @Override
     public CartResponse updateCartItem(Long cartItemId, Integer quantity, String username) {
         CartItem cartItem = cartItemRepository.findById(cartItemId)
-                .orElseThrow(() -> new RuntimeException("Cart Item not found"));
+                .orElseThrow(() -> new CartItemNotFound("Cart Item not found"));
 
         if(!cartItem.getCart().getUser().getEmail().equals(username)){
-            throw new RuntimeException("User not authorized");
+            throw new UserNotAuthorized("User not authorized");
         }
 
         if(quantity > cartItem.getSellerProduct().getQuantity()){
-            throw new RuntimeException("Insufficient stock for this update");
+            throw new InsufficientStock("Insufficient stock for this update");
         }
         if(quantity == 0){
             return deleteItem(cartItemId, username);
@@ -112,12 +113,12 @@ public class CartServiceImpl implements CartService{
     @Override
     public CartResponse deleteItem(Long cartItemId, String username) {
         CartItem cartItem = cartItemRepository.findById(cartItemId)
-                .orElseThrow(() -> new RuntimeException("Cart Item not found"));
+                .orElseThrow(() -> new CartItemNotFound("Cart Item not found"));
 
         Cart cart = cartItem.getCart();
 
         if(!cartItem.getCart().getUser().getEmail().equals(username)){
-            throw new RuntimeException("User not authorized");
+            throw new UserNotAuthorized("User not authorized");
         }
 
         cartItemRepository.delete(cartItem);
@@ -130,7 +131,7 @@ public class CartServiceImpl implements CartService{
     @Override
     public CartResponse clearCart(String email) {
         Cart cart = cartRepository.findByUserEmail(email)
-                .orElseThrow(() -> new RuntimeException("Cart does not exist"));
+                .orElseThrow(() -> new CartNotFound("Cart does not exist"));
 
         // Because of orphanRemoval, this triggers a DELETE for every
         // single CartItem that was in this list.

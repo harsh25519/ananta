@@ -1,6 +1,9 @@
 package dev.hkb.ananta.review;
 
 import dev.hkb.ananta.constants.UserRoles;
+import dev.hkb.ananta.exceptionHandler.ProductNotFound;
+import dev.hkb.ananta.exceptionHandler.UserDoesNotExist;
+import dev.hkb.ananta.exceptionHandler.UserNotAuthorized;
 import dev.hkb.ananta.product.Product;
 import dev.hkb.ananta.product.ProductRepository;
 import dev.hkb.ananta.review.dto.CreateReviewRequest;
@@ -35,15 +38,15 @@ public class ReviewServiceImpl implements ReviewService{
     public ReviewResponse writeReview(Long productId, CreateReviewRequest request, String email) {
 
         Users user = userRepository.findByEmail(email)
-                .orElseThrow(() -> new RuntimeException("User does not exist"));
+                .orElseThrow(() -> new UserDoesNotExist("User does not exist"));
 
         if(!user.getRole().equals(UserRoles.CUSTOMER)){
-            throw new RuntimeException("User is not authorized to write review.");
+            throw new UserNotAuthorized("User is not authorized to write review.");
         }
 
         Review review = reviewMapper.toEntity(request);
         Product product = productRepository.findById(productId)
-                .orElseThrow(() -> new RuntimeException("No product found."));
+                .orElseThrow(() -> new ProductNotFound("No product found."));
 
         review.setUser(user);
         review.setProduct(product);
@@ -64,7 +67,7 @@ public class ReviewServiceImpl implements ReviewService{
     @Override
     public List<ReviewResponse> getMyReviews(String email) {
         Long userId = userRepository.findByEmail(email)
-                .orElseThrow(() -> new RuntimeException("User not allowed"))
+                .orElseThrow(() -> new UserNotAuthorized("User not allowed"))
                 .getId();
 
         return reviewRepository.findAllByUserId(userId)
@@ -77,11 +80,11 @@ public class ReviewServiceImpl implements ReviewService{
     @Override
     public void deleteReview(Long productId, String email) {
         Long userId = userRepository.findByEmail(email)
-                .orElseThrow(() -> new RuntimeException("User not allowed"))
+                .orElseThrow(() -> new UserNotAuthorized("User not allowed"))
                 .getId();
 
         Review review = reviewRepository.findByProductIdAndUserId(productId, userId)
-                .orElseThrow(() -> new RuntimeException("Review not found"));
+                .orElseThrow(() -> new UserNotAuthorized("Review not found"));
 
         reviewRepository.delete(review);
     }

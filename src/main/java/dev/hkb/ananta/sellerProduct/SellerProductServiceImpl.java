@@ -2,10 +2,7 @@ package dev.hkb.ananta.sellerProduct;
 
 import dev.hkb.ananta.constants.ProductStatus;
 import dev.hkb.ananta.constants.UserRoles;
-import dev.hkb.ananta.exceptionHandler.InsufficientStock;
-import dev.hkb.ananta.exceptionHandler.SellerProductNotFound;
-import dev.hkb.ananta.exceptionHandler.UserNotAuthorized;
-import dev.hkb.ananta.exceptionHandler.UserNotFound;
+import dev.hkb.ananta.exceptionHandler.*;
 import dev.hkb.ananta.order.OrderItem;
 import dev.hkb.ananta.order.Orders;
 import dev.hkb.ananta.review.ReviewRepository;
@@ -70,7 +67,7 @@ public class SellerProductServiceImpl implements SellerProductService{
     public List<SellerProductBaseResponse> getProductList(String email) {
 
         Users user = userRepository.findByEmail(email)
-                .orElseThrow(() -> new RuntimeException("User does not exist"));
+                .orElseThrow(() -> new UserDoesNotExist("User does not exist"));
 
         Seller seller = sellerRepository.findByUser(user)
                 .orElseThrow(() -> new RuntimeException("User is not Seller"));
@@ -89,7 +86,7 @@ public class SellerProductServiceImpl implements SellerProductService{
     public SellerProductBaseResponse updateProduct(Long sellerProductId, UpdateSellerProductRequest request, String email) {
 
         SellerProduct product = sellerProductRepository.findById(sellerProductId)
-                .orElseThrow(() -> new RuntimeException("Invalid SellerProduct id"));
+                .orElseThrow(() -> new SellerProductNotFound("Invalid SellerProduct id"));
 
         if(!product.getSeller().getUser().getEmail().equals(email)){
             throw new RuntimeException("The authenticated Seller is not authorized to do this.");

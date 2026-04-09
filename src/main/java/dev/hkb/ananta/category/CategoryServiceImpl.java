@@ -2,6 +2,7 @@ package dev.hkb.ananta.category;
 
 import dev.hkb.ananta.category.dto.CategoryResponse;
 import dev.hkb.ananta.category.dto.CreateCategoryRequest;
+import dev.hkb.ananta.exceptionHandler.CategoryNotFound;
 import dev.hkb.ananta.product.ProductMapper;
 import dev.hkb.ananta.product.ProductRepository;
 import dev.hkb.ananta.product.dto.ProductResponse;
@@ -48,7 +49,7 @@ public class CategoryServiceImpl implements CategoryService{
     @Override
     public List<ProductResponse> getProducts(Long categoryId) {
         Category category = categoryRepository.findById(categoryId)
-                .orElseThrow(() -> new RuntimeException("Category not found"));
+                .orElseThrow(() -> new CategoryNotFound("Category not found"));
 
         return productRepository.findAllByCategoryId(categoryId)
                 .stream()
@@ -60,7 +61,7 @@ public class CategoryServiceImpl implements CategoryService{
     @Override
     public void deleteCategory(Long categoryId) {
         Category category = categoryRepository.findById(categoryId)
-                .orElseThrow(() -> new RuntimeException("Category does not exist"));
+                .orElseThrow(() -> new CategoryNotFound("Category does not exist"));
 
         if (category.getName().equalsIgnoreCase("General")) {
             throw new RuntimeException("The General category is a system default and cannot be deleted.");

@@ -1,6 +1,8 @@
 package dev.hkb.ananta.seller;
 
 import dev.hkb.ananta.constants.UserRoles;
+import dev.hkb.ananta.exceptionHandler.UserDoesNotExist;
+import dev.hkb.ananta.exceptionHandler.UserNotFound;
 import dev.hkb.ananta.seller.dto.CreateSellerRequest;
 import dev.hkb.ananta.seller.dto.SellerResponse;
 import dev.hkb.ananta.user.UserMapper;
@@ -29,7 +31,7 @@ public class SellerServiceImpl implements SellerService{
     public SellerResponse applyForSeller(CreateSellerRequest sellerDto, String email) {
         Users ur = userRepository.findByEmail(email)
 //                .orElseThrow(() -> new UserNotFound("Authenticated user does not exists in database"));
-                .orElseThrow(() -> new RuntimeException("Authenticated user does not exists in database"));
+                .orElseThrow(() -> new UserNotFound("Authenticated user does not exists in database"));
 
         if(sellerRepository.existsByUser(ur) || ur.getRole().equals(UserRoles.SELLER)){
 //            throw new SellerAlreadyExistsException("Seller already exists with these user credentials.");
@@ -47,7 +49,7 @@ public class SellerServiceImpl implements SellerService{
     @Override
     public SellerResponse findByEmail(String username) {
         Users user = userRepository.findByEmail(username)
-                .orElseThrow(() -> new RuntimeException("User does not exits."));
+                .orElseThrow(() -> new UserDoesNotExist("User does not exits."));
 
         Seller seller = sellerRepository.findById(user.getId())
                 .orElseThrow(() -> new RuntimeException("Authenticated user is not seller"));
