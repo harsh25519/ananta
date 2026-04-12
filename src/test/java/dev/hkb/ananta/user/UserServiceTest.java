@@ -1,4 +1,4 @@
-package dev.hkb.ananta.service;
+package dev.hkb.ananta.user;
 
 import dev.hkb.ananta.address.AddressRepository;
 import dev.hkb.ananta.cart.CartRepository;
@@ -6,10 +6,6 @@ import dev.hkb.ananta.constants.UserRoles;
 import dev.hkb.ananta.exceptionHandler.UserNotFound;
 import dev.hkb.ananta.security.jwt.JwtUtilService;
 import dev.hkb.ananta.security.utils.EmailService;
-import dev.hkb.ananta.user.UserMapper;
-import dev.hkb.ananta.user.UserRepository;
-import dev.hkb.ananta.user.UserServiceImpl;
-import dev.hkb.ananta.user.Users;
 import dev.hkb.ananta.user.dto.CreateUserRequest;
 import dev.hkb.ananta.user.dto.LoginDTO;
 import dev.hkb.ananta.user.dto.UserResponse;

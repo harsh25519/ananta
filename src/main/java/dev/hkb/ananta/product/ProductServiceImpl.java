@@ -86,7 +86,7 @@ public class ProductServiceImpl implements ProductService{
         product.setCategory(category);
         product.setTagSet(tags);
 
-        productRepository.save(product);
+        product = productRepository.save(product);
 
         return productMapper.toDto(product);
     }
@@ -97,6 +97,7 @@ public class ProductServiceImpl implements ProductService{
         List<Product> product;
 
         // to find by filter or category and tags to apply for sale
+        /// Later on -> will add functionality to show only those products which can be sale
         if(category == null && (tag == null || tag.isEmpty())){
             product = productRepository.findAll();
         }else{
@@ -122,6 +123,10 @@ public class ProductServiceImpl implements ProductService{
         SellerProduct listing;
         Product masterProduct = productRepository.findById(request.productId())
                 .orElseThrow(() -> new ProductNotFound("Product not found"));
+
+        if(request.quantity() > MAX_STOCK){
+            throw new InsufficientStock("Quantity should be less than max manufacturing limit");
+        }
 
         if (existing.isPresent()) {
             listing = existing.get();

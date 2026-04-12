@@ -37,3 +37,6 @@ src/main/resources/application.properties
 
 # Explicitly DO NOT ignore the example template
 !src/main/resources/application.example.properties
+
+# Ignore IntelliJ Coverage Reports
+htmlReport/

@@ -22,7 +22,7 @@ public class ProductController {
     private final ImageService imageService;
 
     @Autowired
-    public ProductController(ProductService productService, ProductMapper productMapper, ImageService imageService, ProductRepository productRepository) {
+    public ProductController(ProductService productService, ImageService imageService) {
         this.productService = productService;
         this.imageService = imageService;
     }

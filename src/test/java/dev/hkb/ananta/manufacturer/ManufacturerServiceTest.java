@@ -1,13 +1,9 @@
-package dev.hkb.ananta.service;
+package dev.hkb.ananta.manufacturer;
 
 import dev.hkb.ananta.category.Category;
 import dev.hkb.ananta.constants.ProductStatus;
 import dev.hkb.ananta.constants.StatusEnum;
 import dev.hkb.ananta.exceptionHandler.ManufacturerNotFound;
-import dev.hkb.ananta.manufacturer.Manufacturer;
-import dev.hkb.ananta.manufacturer.ManufacturerMapper;
-import dev.hkb.ananta.manufacturer.ManufacturerRepository;
-import dev.hkb.ananta.manufacturer.ManufacturerServiceImpl;
 import dev.hkb.ananta.manufacturer.dto.CreateManufacturerRequest;
 import dev.hkb.ananta.manufacturer.dto.ManufacturerResponse;
 import dev.hkb.ananta.product.Product;

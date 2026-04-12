@@ -22,7 +22,7 @@ public class UserRestController {
     }
 
     ///  Get User Profile only for Customers
-    @GetMapping(value = "/me")
+    @GetMapping("/me")
     public ResponseEntity<?> showProfile(@AuthenticationPrincipal UserPrincipal principal){
         UserResponse user = userService.getCurrentUser(principal.getUsername());
         return ResponseEntity.ok(user);
@@ -30,7 +30,7 @@ public class UserRestController {
 
     /// Admin can access the whole list of users.
     @GetMapping
-    public ResponseEntity<?> showUser(){
+    public ResponseEntity<?> showUsers(){
         return new ResponseEntity<>(userService.getAllUsers(), HttpStatus.OK);
     }
 
