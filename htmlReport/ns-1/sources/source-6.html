@@ -1,0 +1,108 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=UTF-8"> 
+  <title>Coverage Report > ProductRepository</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">dev.hkb.ananta.product</a>
+</div>
+
+<h1>Coverage Summary for Class: ProductRepository (dev.hkb.ananta.product)</h1>
+
+<table class="coverageStats">
+
+<tr>
+  <th class="name">Class</th>
+</tr>
+  <tr>
+    <td class="name">ProductRepository$MockitoMock$uZyRKjGb</td>
+  </tr>
+  <tr>
+    <td class="name">ProductRepository$MockitoMock$uZyRKjGb$auxiliary$DxktEJ67</td>
+  </tr>
+  <tr>
+    <td class="name">ProductRepository$MockitoMock$uZyRKjGb$auxiliary$zuSub2Lf</td>
+  </tr>
+<tr>
+  <td class="name"><strong>Total</strong></td>
+</tr>
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package dev.hkb.ananta.product;
+&nbsp;
+&nbsp;import dev.hkb.ananta.category.Category;
+&nbsp;import org.springframework.data.jpa.repository.JpaRepository;
+&nbsp;import org.springframework.data.jpa.repository.Modifying;
+&nbsp;import org.springframework.data.jpa.repository.Query;
+&nbsp;import org.springframework.data.repository.query.Param;
+&nbsp;import org.springframework.transaction.annotation.Transactional;
+&nbsp;
+&nbsp;import java.util.List;
+&nbsp;import java.util.Set;
+&nbsp;
+&nbsp;public interface ProductRepository extends JpaRepository&lt;Product, Long&gt; {
+&nbsp;    List&lt;Product&gt; findAllByManufacturerId(Long id);
+&nbsp;
+&nbsp;    List&lt;Product&gt; findAllByCategoryId(Long categoryId);
+&nbsp;
+&nbsp;    @Query(&quot;SELECT DISTINCT p FROM Product p &quot; +
+&nbsp;            &quot;LEFT JOIN p.tagSet t &quot; +
+&nbsp;            &quot;WHERE (:categoryId IS NULL OR p.category.id = :categoryId) &quot; +
+&nbsp;            &quot;OR (t.id IN :tagIds)&quot;)
+&nbsp;    List&lt;Product&gt; findByCategoryOrTags(@Param(&quot;categoryId&quot;) Long categoryId,
+&nbsp;                                       @Param(&quot;tagIds&quot;) Set&lt;Long&gt; tagIds);
+&nbsp;
+&nbsp;    @Modifying
+&nbsp;    @Transactional
+&nbsp;    @Query(&quot;UPDATE Product p SET p.category = :newCat WHERE p.category.id = :oldCatId&quot;)
+&nbsp;    void updateCategoryForProducts(@Param(&quot;oldCatId&quot;)Long categoryId, @Param(&quot;newCat&quot;)Category generalCategory);
+&nbsp;
+&nbsp;    List&lt;Product&gt; findAllByTagSet_Id(Long tagSetId);
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2026-04-12 18:51</div>
+</div>
+</body>
+</html>

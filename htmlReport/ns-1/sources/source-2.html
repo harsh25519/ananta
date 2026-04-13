@@ -1,0 +1,176 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=UTF-8"> 
+  <title>Coverage Report > ProductController</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">dev.hkb.ananta.product</a>
+</div>
+
+<h1>Coverage Summary for Class: ProductController (dev.hkb.ananta.product)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">ProductController</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (6/6)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (11/11)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package dev.hkb.ananta.product;
+&nbsp;
+&nbsp;import dev.hkb.ananta.image.ImageService;
+&nbsp;import dev.hkb.ananta.product.dto.CreateProductRequest;
+&nbsp;import dev.hkb.ananta.product.dto.ProductResponse;
+&nbsp;import dev.hkb.ananta.security.utils.UserPrincipal;
+&nbsp;import dev.hkb.ananta.sellerProduct.dto.CreateSellerProductRequest;
+&nbsp;import jakarta.validation.Valid;
+&nbsp;import org.springframework.beans.factory.annotation.Autowired;
+&nbsp;import org.springframework.http.ResponseEntity;
+&nbsp;import org.springframework.security.core.annotation.AuthenticationPrincipal;
+&nbsp;import org.springframework.web.bind.annotation.*;
+&nbsp;
+&nbsp;import java.util.Map;
+&nbsp;import java.util.Set;
+&nbsp;
+&nbsp;@RestController
+&nbsp;@RequestMapping(&quot;/products&quot;)
+&nbsp;public class ProductController {
+&nbsp;
+&nbsp;    private final ProductService productService;
+&nbsp;    private final ImageService imageService;
+&nbsp;
+&nbsp;    @Autowired
+<b class="fc">&nbsp;    public ProductController(ProductService productService, ImageService imageService) {</b>
+<b class="fc">&nbsp;        this.productService = productService;</b>
+<b class="fc">&nbsp;        this.imageService = imageService;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /// Create Product by ADMIN
+&nbsp;    @PostMapping
+&nbsp;    public ResponseEntity&lt;?&gt; createProduct(@Valid @RequestBody CreateProductRequest cpr){
+<b class="fc">&nbsp;        ProductResponse product = productService.createProduct(cpr);</b>
+<b class="fc">&nbsp;        return ResponseEntity.ok(product);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /// update it later with parameter for searching and sorting
+&nbsp;    /// get product to sell by seller
+&nbsp;    /// Here Seller can see products which he/she can list to sell
+&nbsp;    @GetMapping
+&nbsp;    public ResponseEntity&lt;?&gt; getProductsToSell(
+&nbsp;            @RequestParam(required = false) Long category,
+&nbsp;            @RequestParam(required = false) Set&lt;Long&gt; tags
+&nbsp;            ){
+<b class="fc">&nbsp;        return ResponseEntity.ok(productService.getProducts(category, tags));</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /// Seller can apply to sell a particular item from the above list
+&nbsp;    @PostMapping(&quot;/applications&quot;)
+&nbsp;    public ResponseEntity&lt;?&gt; applyToSell(@Valid @RequestBody CreateSellerProductRequest request,
+&nbsp;                                         @AuthenticationPrincipal UserPrincipal userPrincipal){
+<b class="fc">&nbsp;        productService.sellerApplyToProduct(request, userPrincipal.getUsername());</b>
+<b class="fc">&nbsp;        return ResponseEntity.ok(Map.of(</b>
+&nbsp;                &quot;message&quot;, &quot;Application submitted successfully&quot;,
+&nbsp;                &quot;status&quot;, &quot;PENDING&quot;
+&nbsp;        ));
+&nbsp;    }
+&nbsp;
+&nbsp;    /// Admin can get pending request queued
+&nbsp;    @GetMapping(&quot;/pending&quot;)
+&nbsp;    public ResponseEntity&lt;?&gt; getPendingQueue(){
+<b class="fc">&nbsp;        return ResponseEntity.ok(productService.getPendingApprovals());</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /// Admin can approve any pending request
+&nbsp;    @PostMapping(&quot;/approve/{listingId}&quot;)
+&nbsp;    public ResponseEntity&lt;?&gt; resolveRequest(@PathVariable Long listingId,
+&nbsp;                                            @RequestParam(defaultValue = &quot;true&quot;) boolean status){
+<b class="fc">&nbsp;        String message = productService.approveListing(listingId, status);</b>
+<b class="fc">&nbsp;        return ResponseEntity.ok(Map.of(&quot;message&quot;, message));</b>
+&nbsp;    }
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2026-04-12 18:51</div>
+</div>
+</body>
+</html>

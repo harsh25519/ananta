@@ -40,3 +40,5 @@ src/main/resources/application.properties
 
 # Ignore IntelliJ Coverage Reports
 htmlReport/
+
+src/test/resources/application-test.properties

@@ -1,0 +1,204 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=UTF-8"> 
+  <title>Coverage Report > ProductMapper</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">dev.hkb.ananta.product</a>
+</div>
+
+<h1>Coverage Summary for Class: ProductMapper (dev.hkb.ananta.product)</h1>
+
+<table class="coverageStats">
+
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Branch, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">ProductMapper</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/2)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/2)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/11)
+  </span>
+</td>
+</tr>
+  <tr>
+    <td class="name">ProductMapper$MockitoMock$XNpRE57K</td>
+  </tr>
+  <tr>
+    <td class="name">ProductMapper$MockitoMock$XNpRE57K$auxiliary$BaOJ7cTc</td>
+  </tr>
+  <tr>
+    <td class="name">ProductMapper$MockitoMock$XNpRE57K$auxiliary$BxuGwvm7</td>
+  </tr>
+<tr>
+  <td class="name"><strong>Total</strong></td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/2)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/2)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/11)
+  </span>
+</td>
+</tr>
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package dev.hkb.ananta.product;
+&nbsp;
+&nbsp;import dev.hkb.ananta.product.dto.CreateProductRequest;
+&nbsp;import dev.hkb.ananta.product.dto.ProductResponse;
+&nbsp;import dev.hkb.ananta.tag.Tag;
+&nbsp;import org.mapstruct.Mapper;
+&nbsp;import org.mapstruct.Mapping;
+&nbsp;import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
+&nbsp;
+&nbsp;import java.util.Set;
+&nbsp;import java.util.stream.Collectors;
+&nbsp;
+&nbsp;@Mapper(componentModel = &quot;spring&quot;)
+&nbsp;public interface ProductMapper {
+&nbsp;
+&nbsp;    // resolve these ignored things at the business logic
+&nbsp;    @Mapping(target = &quot;category&quot;, ignore = true)
+&nbsp;    @Mapping(target = &quot;manufacturer&quot;, ignore = true)
+&nbsp;    @Mapping(target = &quot;tagSet&quot;, ignore = true)
+&nbsp;    Product toEntity(CreateProductRequest productRequest);
+&nbsp;
+&nbsp;    @Mapping(source = &quot;id&quot;, target = &quot;Id&quot;)
+&nbsp;    @Mapping(target = &quot;categoryName&quot;, expression = &quot;java(product.getCategory().getName())&quot;)
+&nbsp;    @Mapping(target = &quot;manufacturerName&quot;, expression = &quot;java(product.getManufacturer().getBrandName())&quot;)
+&nbsp;    @Mapping(source = &quot;tagSet&quot;, target = &quot;tagNames&quot;)
+&nbsp;    @Mapping(target = &quot;imageURL&quot;, expression = &quot;java(getImageUrl(product))&quot;)
+&nbsp;    ProductResponse toDto(Product product);
+&nbsp;
+&nbsp;    // for tagNames field to map tagset&lt;TAG&gt; to set&lt;String&gt;
+&nbsp;    default Set&lt;String&gt; mapTagsToNames(Set&lt;Tag&gt; tagSet) {
+<b class="nc">&nbsp;        if (tagSet == null) {</b>
+<b class="nc">&nbsp;            return null;</b>
+&nbsp;        }
+<b class="nc">&nbsp;        return tagSet.stream()</b>
+<b class="nc">&nbsp;                .map(Tag::getTag)</b>
+<b class="nc">&nbsp;                .collect(Collectors.toSet());</b>
+&nbsp;    }
+&nbsp;
+&nbsp;//    default String getEncodingImage(Product product){
+&nbsp;//        if(product != null &amp;&amp;
+&nbsp;//                product.getProductImage() != null){
+&nbsp;//            return product.getProductImage().base64Img();
+&nbsp;//        }
+&nbsp;//        return null;
+&nbsp;//    }
+&nbsp;//
+&nbsp;//    default String getImageType(Product product){
+&nbsp;//        if(product != null &amp;&amp;
+&nbsp;//                product.getProductImage() != null){
+&nbsp;//            return product.getProductImage().imageType();
+&nbsp;//        }
+&nbsp;//        return null;
+&nbsp;//    }
+&nbsp;
+&nbsp;    default String getImageUrl(Product product){
+&nbsp;
+<b class="nc">&nbsp;        String imgUrl = ServletUriComponentsBuilder.fromCurrentContextPath()</b>
+<b class="nc">&nbsp;                .path(&quot;/products/&quot;)</b>
+<b class="nc">&nbsp;                .path(product.getId().toString())</b>
+<b class="nc">&nbsp;                .path(&quot;/images&quot;)</b>
+<b class="nc">&nbsp;                .toUriString();</b>
+<b class="nc">&nbsp;        return imgUrl;</b>
+&nbsp;    }
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2026-04-12 18:51</div>
+</div>
+</body>
+</html>

@@ -22,7 +22,8 @@ public class ManufacturerServiceImpl implements ManufacturerService{
     private final ProductMapper productMapper;
 
     @Autowired
-    public ManufacturerServiceImpl(ManufacturerRepository manufacturerRepository, ManufacturerMapper manufacturerMapper, ProductRepository productRepository, ProductMapper productMapper) {
+    public ManufacturerServiceImpl(ManufacturerRepository manufacturerRepository, ManufacturerMapper manufacturerMapper,
+                                   ProductRepository productRepository, ProductMapper productMapper) {
         this.manufacturerRepository = manufacturerRepository;
         this.manufacturerMapper = manufacturerMapper;
         this.productRepository = productRepository;
