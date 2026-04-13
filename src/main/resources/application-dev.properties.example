@@ -1,18 +1,15 @@
-spring.application.name=ananta
+spring.datasource.url=Your_DATABASE_url
+spring.datasource.username=Your_DB_Password
+spring.datasource.password=Your_DB_Password
 
-spring.datasource.url={DATABASE  url}
-spring.datasource.username={DB Password}
-spring.datasource.password={DB Password}
 
-server.servlet.context-path=/ananta/v1
-
-SECRET_KEY = {JWT_SECRET_KEY}
+SECRET_KEY = Your_JWT_SECRET_KEY
 
 spring.mail.host=smtp.gmail.com
 spring.mail.port=587
-spring.mail.username= {email to send mails}
-spring.mail.password= {app password}
-spring.mail.properties.mail.smtp.auth=true{for auth}
+spring.mail.username= #{email to send mails}
+spring.mail.password= #{app password}
+spring.mail.properties.mail.smtp.auth=true   {for auth}
 spring.mail.properties.mail.smtp.starttls.enable=true{transport layer service}
 
 spring.servlet.multipart.enabled=true
@@ -24,5 +21,5 @@ spring.jpa.properties.hibernate.dialect=org.hibernate.dialect.PostgreSQLDialect
 spring.jpa.properties.hibernate.type.descriptor.sql.BinaryTypeDescriptor=REPEATABLE_READ
 
 #Payment test api
-RAZORPAY_API_KEY={Test Key}
-RAZORPAY_API_SECRET={Test key secret}
+RAZORPAY_API_KEY=Your_Test_Key
+RAZORPAY_API_SECRET=Test_key_secret

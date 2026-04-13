@@ -32,13 +32,28 @@ build/
 ### VS Code ###
 .vscode/
 
-# Ignore the file with real passwords
-src/main/resources/application.properties
+# 1. Ignore ALL local property files by default (Safety First)
+src/main/resources/application-dev.properties
+src/test/resources/application-test.properties
 
-# Explicitly DO NOT ignore the example template
-!src/main/resources/application.example.properties
+# 2. Ignore build and IDE files
+target/
+*.class
+.mvn/
+.idea/
+.vscode/
+*.jar
+
+# 3. Explicitly ALLOW (un-ignore) these files to be pushed to GitHub
+!src/main/resources/application.properties
+!src/main/resources/application-prod.properties
+!src/test/resources/application-prodtest.properties
+!src/main/resources/application-dev.properties.example
+!src/test/resources/application-test.properties.example
+
+# Un-ignore the base test properties
+!src/test/resources/application.properties
 
 # Ignore IntelliJ Coverage Reports
 htmlReport/
 
-src/test/resources/application-test.properties
