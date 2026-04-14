@@ -4,6 +4,7 @@ import dev.hkb.ananta.security.utils.UserPrincipal;
 import dev.hkb.ananta.sellerProduct.dto.SellerProductBaseResponse;
 import dev.hkb.ananta.sellerProduct.dto.SellerProductFullResponse;
 import dev.hkb.ananta.sellerProduct.dto.UpdateSellerProductRequest;
+import io.swagger.v3.oas.annotations.security.SecurityRequirements;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -27,6 +28,7 @@ public class SellerProductController {
 
     /// Show all products at the front page
     @GetMapping("/browse")
+    @SecurityRequirements()
     public ResponseEntity<?> getProducts(@RequestParam(required = false) String productName,
                                          @RequestParam(required = false) Long category,
                                          @RequestParam(required = false) Set<Long> tags,

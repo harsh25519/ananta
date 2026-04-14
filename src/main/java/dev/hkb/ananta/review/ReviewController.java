@@ -3,6 +3,7 @@ package dev.hkb.ananta.review;
 import dev.hkb.ananta.review.dto.CreateReviewRequest;
 import dev.hkb.ananta.review.dto.ReviewResponse;
 import dev.hkb.ananta.security.utils.UserPrincipal;
+import io.swagger.v3.oas.annotations.security.SecurityRequirements;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -34,6 +35,7 @@ public class ReviewController {
 
     /// Get list of reviews for a particular product can be accessed by anyone
     @GetMapping("/{productId}/reviews")
+    @SecurityRequirements()
     public ResponseEntity<?> getReviews(@PathVariable Long productId){
 
         List<ReviewResponse> reviews = reviewService.getProductReviews(productId);

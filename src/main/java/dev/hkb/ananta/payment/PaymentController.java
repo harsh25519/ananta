@@ -2,6 +2,7 @@ package dev.hkb.ananta.payment;
 
 import dev.hkb.ananta.payment.dto.PaymentResponse;
 import dev.hkb.ananta.security.utils.UserPrincipal;
+import io.swagger.v3.oas.annotations.security.SecurityRequirements;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -29,6 +30,7 @@ public class PaymentController {
     }
 
     @GetMapping("/callback")
+    @SecurityRequirements()
     public ResponseEntity<?> paymentCallback(
             @RequestParam String razorpay_payment_link_status,
             @RequestParam String razorpay_payment_id,

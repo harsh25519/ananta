@@ -1,6 +1,8 @@
 package dev.hkb.ananta.image;
 
+import io.swagger.v3.oas.annotations.security.SecurityRequirements;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -20,15 +22,16 @@ public class ImageController {
 
     /// Upload image of product
     /// id === productId
-    @PostMapping("/{id}/images")
+    @PostMapping(path = "/{id}/images", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<?> uploadImages(@PathVariable Long id,
-                                          @RequestPart("file") MultipartFile imageFile
+                                          @RequestParam("file") MultipartFile imageFile
     ){
         cloudinaryService.addImage(id, imageFile);
         return ResponseEntity.ok(Map.of("Message: ", "Image successfully added"));
     }
 
     @GetMapping("/{productId}/images")
+    @SecurityRequirements()
     public ResponseEntity<?> getProductImage(@PathVariable Long productId){
         Image productImage = cloudinaryService.getImage(productId);
         if (productImage == null || productImage.getImageUrl() == null) {

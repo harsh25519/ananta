@@ -3,6 +3,7 @@ package dev.hkb.ananta.category;
 import dev.hkb.ananta.category.dto.CategoryResponse;
 import dev.hkb.ananta.category.dto.CreateCategoryRequest;
 import dev.hkb.ananta.product.dto.ProductResponse;
+import io.swagger.v3.oas.annotations.security.SecurityRequirements;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -31,6 +32,7 @@ public class CategoryController {
 
     /// Anyone can access category list
     @GetMapping
+    @SecurityRequirements()
     public ResponseEntity<?> getCategoryList(){
         List<CategoryResponse> list = categoryService.getAllCategories();
 
@@ -39,6 +41,7 @@ public class CategoryController {
 
     /// Anyone can access products just by categories
     @GetMapping("/{category_id}/products")
+    @SecurityRequirements()
     public ResponseEntity<?> getProducts(@PathVariable Long category_id){
         List<ProductResponse> products = categoryService.getProducts(category_id);
         return ResponseEntity.ok(products);

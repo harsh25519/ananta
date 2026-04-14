@@ -5,7 +5,6 @@ import dev.hkb.ananta.product.dto.ProductResponse;
 import dev.hkb.ananta.tag.Tag;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
-import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -53,12 +52,13 @@ public interface ProductMapper {
 //    }
 
     default String getImageUrl(Product product){
+        // Check if the product has an image attached to avoid NullPointerExceptions
+        if (product != null && product.getProductImage() != null) {
+            // Return the direct Cloudinary URL stored in your database
+            return product.getProductImage().getImageUrl();
+        }
 
-        String imgUrl = ServletUriComponentsBuilder.fromCurrentContextPath()
-                .path("/products/")
-                .path(product.getId().toString())
-                .path("/images")
-                .toUriString();
-        return imgUrl;
+        // Return null (or a default placeholder image URL) if the product has no image
+        return "https://res.cloudinary.com/dfdlovjnz/image/upload/v1776172237/samples/radial_02.png";
     }
 }
