@@ -1,6 +1,6 @@
 package dev.hkb.ananta.product;
 
-import dev.hkb.ananta.image.ImageService;
+import dev.hkb.ananta.image.CloudinaryService;
 import dev.hkb.ananta.product.dto.CreateProductRequest;
 import dev.hkb.ananta.product.dto.ProductResponse;
 import dev.hkb.ananta.security.utils.UserPrincipal;
@@ -19,10 +19,10 @@ import java.util.Set;
 public class ProductController {
 
     private final ProductService productService;
-    private final ImageService imageService;
+    private final CloudinaryService imageService;
 
     @Autowired
-    public ProductController(ProductService productService, ImageService imageService) {
+    public ProductController(ProductService productService, CloudinaryService imageService) {
         this.productService = productService;
         this.imageService = imageService;
     }

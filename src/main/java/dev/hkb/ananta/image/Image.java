@@ -2,8 +2,6 @@ package dev.hkb.ananta.image;
 
 import dev.hkb.ananta.product.Product;
 import jakarta.persistence.*;
-import org.hibernate.annotations.JdbcType;
-import org.hibernate.type.descriptor.jdbc.BinaryJdbcType;
 
 @Entity
 @Table(name = "images")
@@ -20,10 +18,11 @@ public class Image {
     @Column(name = "type")
     private String imageType;
 
-    @Lob
-    @JdbcType(BinaryJdbcType.class)
-    @Column(name = "img")
-    private byte[] image;
+    @Column(name = "img_url")
+    private String imageUrl;
+
+    @Column(name = "cloudinary_id")
+    private String cloudinaryPublicId;
 
     @OneToOne
     @JoinColumn(name = "product_id")
@@ -32,10 +31,11 @@ public class Image {
     public Image() {
     }
 
-    public Image(String imageName, String imageType, byte[] image) {
+    public Image(String imageName, String imageType, String imageUrl, String cloudinaryPublicId) {
         this.imageName = imageName;
         this.imageType = imageType;
-        this.image = image;
+        this.imageUrl = imageUrl;
+        this.cloudinaryPublicId = cloudinaryPublicId;
     }
 
     public Long getId() {
@@ -62,12 +62,20 @@ public class Image {
         this.imageType = imageType;
     }
 
-    public byte[] getImage() {
-        return image;
+    public String getImageUrl() {
+        return imageUrl;
     }
 
-    public void setImage(byte[] image) {
-        this.image = image;
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
+    }
+
+    public String getCloudinaryPublicId() {
+        return cloudinaryPublicId;
+    }
+
+    public void setCloudinaryPublicId(String cloudinaryPublicId) {
+        this.cloudinaryPublicId = cloudinaryPublicId;
     }
 
     public Product getProduct() {

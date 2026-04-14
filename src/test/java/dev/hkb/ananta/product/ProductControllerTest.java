@@ -1,7 +1,7 @@
 package dev.hkb.ananta.product;
 
 import dev.hkb.ananta.constants.ProductStatus;
-import dev.hkb.ananta.image.ImageService;
+import dev.hkb.ananta.image.CloudinaryService;
 import dev.hkb.ananta.product.dto.CreateProductRequest;
 import dev.hkb.ananta.product.dto.ProductResponse;
 import dev.hkb.ananta.security.config.SecurityConfig;
@@ -47,7 +47,7 @@ public class ProductControllerTest {
     @MockitoBean
     private JwtUtilService jwtUtilService;
     @MockitoBean
-    private ImageService imageService;
+    private CloudinaryService imageService;
     @MockitoBean
     private UserDetailsService userDetailsService;
 

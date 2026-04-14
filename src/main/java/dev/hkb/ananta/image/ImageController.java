@@ -1,8 +1,6 @@
 package dev.hkb.ananta.image;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -13,11 +11,11 @@ import java.util.Map;
 @RequestMapping("/products")
 public class ImageController {
 
-    private final ImageService imageService;
+    private final CloudinaryService cloudinaryService;
 
     @Autowired
-    public ImageController(ImageService imageService) {
-        this.imageService = imageService;
+    public ImageController(CloudinaryService cloudinaryService) {
+        this.cloudinaryService = cloudinaryService;
     }
 
     /// Upload image of product
@@ -26,27 +24,24 @@ public class ImageController {
     public ResponseEntity<?> uploadImages(@PathVariable Long id,
                                           @RequestPart("file") MultipartFile imageFile
     ){
-        imageService.addImage(id, imageFile);
+        cloudinaryService.addImage(id, imageFile);
         return ResponseEntity.ok(Map.of("Message: ", "Image successfully added"));
     }
 
     @GetMapping("/{productId}/images")
-    public ResponseEntity<byte[]> getProductImage(@PathVariable Long productId){
-        Image productImage = imageService.getImage(productId);
-        if (productImage == null || productImage.getImage() == null) {
+    public ResponseEntity<?> getProductImage(@PathVariable Long productId){
+        Image productImage = cloudinaryService.getImage(productId);
+        if (productImage == null || productImage.getImageUrl() == null) {
             // Returning 404 is cleaner for the frontend/browser
             return ResponseEntity.notFound().build();
         }
 
-        return ResponseEntity.ok()
-                .contentType(MediaType.parseMediaType(productImage.getImageType()))
-                .header(HttpHeaders.CACHE_CONTROL, "max-age=3600") // store for 1 hour locally
-                .body(productImage.getImage());
+        return ResponseEntity.ok(Map.of("imageUrl", productImage.getImageUrl()));
     }
 
     @DeleteMapping("/{productId}/images")
     public ResponseEntity<?> deleteImage(@PathVariable Long productId){
-        imageService.removeImage(productId);
+        cloudinaryService.removeImage(productId);
         return ResponseEntity.ok(Map.of("Message: ", "Image deleted successfully"));
     }
 }

@@ -28,6 +28,7 @@ public class SecurityConfig{
                         configurer
                                 // ---Health---
                                 .requestMatchers("/ping").permitAll()
+
                                 // ---Swagger---
                                 .requestMatchers(
                                         "/v3/api-docs/**",

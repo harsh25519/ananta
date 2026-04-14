@@ -23,3 +23,8 @@ spring.jpa.properties.hibernate.type.descriptor.sql.BinaryTypeDescriptor=REPEATA
 #Payment test api
 RAZORPAY_API_KEY=Your_Test_Key
 RAZORPAY_API_SECRET=Test_key_secret
+
+
+cloudinary.cloud-name=YOUR_CLOUDINARY_CLOUD_NAME
+cloudinary.api-key=YOUR_CLOUDINARY_API_KEY
+cloudinary.api-secret=YOUR_CLOUDINARY_API_SECRET
