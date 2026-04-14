@@ -26,6 +26,8 @@ public class SecurityConfig{
     public SecurityFilterChain securityFilterChain(HttpSecurity http, JwtFilter jwtFilter) throws Exception{
         http.authorizeHttpRequests(configurer ->
                         configurer
+                                // ---Health---
+                                .requestMatchers("/ping").permitAll()
                                 // ---Swagger---
                                 .requestMatchers(
                                         "/v3/api-docs/**",
