@@ -74,19 +74,20 @@ Covers unit tests (service layer with Mockito) and integration tests (repository
 ### 🔄 System Architecture & API Workflows
 
 #### 1. Authentication & User Management
-*Visitors can register, secure a JWT, manage addresses, and seamlessly upgrade to a Seller account.*
+Visitors can register, secure a JWT, manage addresses, and seamlessly upgrade to a Seller account.
 ![User Auth Flow](https://res.cloudinary.com/dfdlovjnz/image/upload/q_auto/f_auto/v1776275922/auth_user_flow_o5gres.svg)
 
 #### 2. Admin Catalog Management
-*Admins maintain strict control over the global catalog by managing authorized manufacturers, categories, and tags.*
+Admins maintain strict control over the global catalog by managing authorized manufacturers, categories, and tags.
 ![Admin Catalog Flow](https://res.cloudinary.com/dfdlovjnz/image/upload/q_auto/f_auto/v1776275922/admin_catalog_flow_gnbew8.svg)
 
 #### 3. Seller Product Listing
-*A secure system where Admins create master products, and Sellers must apply to list inventory against them.*
+A secure system where Admins create master products, and Sellers must apply to list inventory against them.
 ![Product Listing Flow](https://res.cloudinary.com/dfdlovjnz/image/upload/q_auto/f_auto/v1776275922/product_listing_flow_wgpd1o.svg)
 
 #### 4. Customer Shopping & Checkout
-*The complete end-to-end buyer journey, featuring cart management, order calculation, and secure Razorpay integration.*
+The complete end-to-end buyer journey, featuring cart management, order calculation, and secure Razorpay integration.
+
 ![Customer Shopping Flow](https://res.cloudinary.com/dfdlovjnz/image/upload/q_auto/f_auto/v1776275922/customer_shopping_flow_qowca5.svg)
 ---
 
