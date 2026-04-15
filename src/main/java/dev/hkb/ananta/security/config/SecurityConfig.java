@@ -27,7 +27,7 @@ public class SecurityConfig{
         http.authorizeHttpRequests(configurer ->
                         configurer
                                 // ---Health---
-                                .requestMatchers("/ping").permitAll()
+                                .requestMatchers("/ping","/").permitAll()
 
                                 // ---Swagger---
                                 .requestMatchers(
