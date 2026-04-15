@@ -18,6 +18,8 @@ public class RazorpayService {
     private final PaymentRepository paymentRepository;
     private final OrderToPaymentMapper orderToPaymentMapper;
     private final RazorpayClient razorpayClient; // Mark as final
+    @Value("${WEB_NAME}")
+    private String webName;
 
     // Inject the keys directly into the constructor
     @Autowired
@@ -49,7 +51,7 @@ public class RazorpayService {
         JSONObject notify = new JSONObject();
         notify.put("email", "true");
 
-        paymentLinkRequest.put("callback_url", "http://localhost:8080/ananta/v1/payments/callback");
+        paymentLinkRequest.put("callback_url", webName + "/ananta/v1/payments/callback");
         paymentLinkRequest.put("callback_method", "get");
 
         PaymentLink payment = razorpayClient.paymentLink.create(paymentLinkRequest);
