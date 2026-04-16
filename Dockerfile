@@ -11,4 +11,4 @@ WORKDIR /app
 # This grabs the JAR built in the previous step
 COPY --from=build /app/target/*.jar ananta-api.jar
 EXPOSE 8080
-ENTRYPOINT ["java", "-jar", "ananta-api.jar"]
+ENTRYPOINT ["java", "-Xmx256m", "-jar", "ananta-api.jar"]
