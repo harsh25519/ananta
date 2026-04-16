@@ -10,5 +10,4 @@ FROM eclipse-temurin:17-jdk-jammy
 WORKDIR /app
 # This grabs the JAR built in the previous step
 COPY --from=build /app/target/*.jar ananta-api.jar
-EXPOSE 8080
 ENTRYPOINT ["java", "-Xmx256m", "-jar", "ananta-api.jar"]
