@@ -2,6 +2,7 @@ package dev.hkb.ananta.order;
 
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
@@ -12,4 +13,7 @@ public interface OrderRepository extends JpaRepository<Orders, Long> {
     @Query("Select distinct o from Orders o join fetch o.orderItemList  where o.user.id = :userId")
     List<Orders> findAllByUser_Id(@Param("userId")Long userId);
 
+    @Modifying
+    @Query("UPDATE Orders o SET o.orderStatus = 'CANCELLED' WHERE o.orderStatus = 'PENDING'")
+    int cancelAllPendingOrders();
 }
