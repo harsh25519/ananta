@@ -1,20 +1,21 @@
 package dev.hkb.ananta.config;
 
-import dev.hkb.ananta.order.OrderRepository;
+import dev.hkb.ananta.payment.PaymentRepository;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.concurrent.TimeUnit;
 
 @Component
 public class CronJobs {
 
-    private final OrderRepository orderRepository;
+    private final PaymentRepository paymentRepository;
 
     // Constructor injection
-    public CronJobs(OrderRepository orderRepository) {
-        this.orderRepository = orderRepository;
+    public CronJobs(PaymentRepository paymentRepository) {
+        this.paymentRepository = paymentRepository;
     }
 
     // Runs every 5 hours.
@@ -23,7 +24,8 @@ public class CronJobs {
     @Transactional
     public void cancelPendingAnantaOrders() {
         try {
-            int updatedCount = orderRepository.cancelAllPendingOrders();
+            LocalDateTime cutoffTime = LocalDateTime.now().minusHours(5);
+            int updatedCount = paymentRepository.cancelAllPendingPayments(cutoffTime);
         } catch (Exception e) {
             throw new RuntimeException("Order are not being processed.",e);
         }
