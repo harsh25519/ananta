@@ -5,7 +5,7 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 import java.util.concurrent.TimeUnit;
 
 @Component
@@ -24,7 +24,7 @@ public class CronJobs {
     @Transactional
     public void cancelPendingAnantaOrders() {
         try {
-            LocalDateTime cutoffTime = LocalDateTime.now().minusHours(5);
+            OffsetDateTime cutoffTime = OffsetDateTime.now().minusHours(5);
             int updatedCount = paymentRepository.cancelAllPendingPayments(cutoffTime);
         } catch (Exception e) {
             throw new RuntimeException("Order are not being processed.",e);

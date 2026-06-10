@@ -5,7 +5,7 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
-import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 import java.util.Optional;
 
 public interface PaymentRepository extends JpaRepository<Payments, Long> {
@@ -14,5 +14,5 @@ public interface PaymentRepository extends JpaRepository<Payments, Long> {
 
     @Modifying
     @Query("UPDATE Payments p SET p.paymentStatus = 'CANCELLED' WHERE p.paymentStatus = 'PENDING' AND p.createdAt < :cutoffTime")
-    int cancelAllPendingPayments(@Param("cutoffTime") LocalDateTime cutoffTime);
+    int cancelAllPendingPayments(@Param("cutoffTime") OffsetDateTime cutoffTime);
 }
